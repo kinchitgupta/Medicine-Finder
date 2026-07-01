@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Edit Medical Record</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #edf2f7;
+  --bg2:       #e2eaf4;
+  --surface:   #d6e2ef;
+  --card:      #c9d9ea;
+  --border:    #aec4d9;
+  --accent:    #1d4ed8;
+  --accent2:   #3b82f6;
+  --accent-l:  #bfdbfe;
+  --text:      #0f1e2e;
+  --text2:     #1e3a52;
+  --text3:     #5a7a96;
+  --navy:      #0f2137;
+  --sky:       #93c5fd;
+  --r:         10px;
+  --rL:        16px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── NAVBAR ── */
+.navbar {
+  background: var(--navy);
+  padding: 0 2rem;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--accent2);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.navbar-brand {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--sky);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.brand-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent2);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%,100%{ box-shadow: 0 0 0 0 rgba(59,130,246,.5); }
+  70%{ box-shadow: 0 0 0 7px rgba(59,130,246,0); }
+}
+.navbar-links { display: flex; align-items: center; gap: 4px; }
+.navbar-links a {
+  text-decoration: none;
+  font-size: .78rem;
+  font-weight: 600;
+  color: #9fbfaa;
+  padding: 6px 14px;
+  border-radius: 50px;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  transition: background .2s, color .2s;
+}
+.navbar-links a:hover { background: rgba(255,255,255,.1); color: #fff; }
+.navbar-links a.active { background: rgba(59,130,246,.2); color: var(--sky); }
+.navbar-links a.logout { background: rgba(59,130,246,.15); color: var(--sky); border: 1px solid rgba(59,130,246,.3); }
+.navbar-links a.logout:hover { background: rgba(59,130,246,.3); }
+
+/* Hamburger Menu Toggle */
+.hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 6px; border-radius: 8px; }
+.hamburger span { display: block; width: 22px; height: 2px; background: #9fbfaa; border-radius: 2px; transition: transform .3s, opacity .3s; }
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.mobile-menu {
+  display: none;
+  position: absolute; top: 58px; left: 0; right: 0;
+  background: var(--navy);
+  border-bottom: 2px solid var(--accent2);
+  z-index: 90;
+}
+.mobile-menu.open { display: block; }
+.mobile-menu a {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 24px;
+  text-decoration: none;
+  font-size: .88rem; font-weight: 600;
+  color: #9fbfaa;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  text-transform: uppercase; letter-spacing: .03em;
+  transition: background .2s;
+}
+.mobile-menu a:hover { background: rgba(255,255,255,.07); color: #fff; }
+.mobile-menu a.active { color: var(--sky); }
+.mobile-menu a.logout { color: var(--sky); }
+
+/* ── PAGE WRAP ── */
+.wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+  width: 100%;
+}
+
+/* ── PAGE HEADER ── */
+.page-header {
+  margin-bottom: 2rem;
+}
+.page-header h1 {
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -.01em;
+}
+.page-header h1 span { color: var(--accent); }
+.page-header .sub { font-size: .8rem; color: var(--text3); margin-top: 3px; }
+
+/* ── FORM STRUCTURAL CARD ── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--rL);
+  padding: 2.5rem 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+.form-group:last-of-type {
+  margin-bottom: 0;
+}
+.form-label {
+  display: block;
+  font-size: .7rem;
+  font-weight: 700;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: 6px;
+}
+.form-input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  background: var(--surface);
+  color: var(--text);
+  font-size: .9rem;
+  font-family: inherit;
+  font-weight: 500;
+  transition: border-color .15s, background .15s, box-shadow .15s;
+  outline: none;
+}
+.form-input:focus {
+  border-color: var(--accent2);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(59,130,246,.15);
+}
+.form-input[readonly] {
+  background: rgba(255, 255, 255, 0.3);
+  color: var(--text3);
+  cursor: not-allowed;
+  border-color: var(--border);
+}
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+/* ── INTERACTION ELEMENTS ── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  text-decoration: none; font-size: .8rem; font-weight: 700;
+  padding: 11px 20px; border-radius: var(--r);
+  transition: all .18s; cursor: pointer; border: none; font-family: inherit;
+}
+.btn-navy {
+  background: var(--navy);
+  color: var(--sky);
+}
+.btn-navy:hover {
+  background: var(--text);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+.btn-outline-navy {
+  background: transparent; color: var(--text2);
+  border: 1px solid var(--border);
+}
+.btn-outline-navy:hover {
+  background: var(--border); color: var(--navy);
+}
+
+/* ── NOTIFICATIONS ── */
+.msg-box {
+  background: var(--surface);
+  border-left: 4px solid var(--accent2);
+  border-radius: var(--r);
+  padding: 14px 18px;
+  font-size: .86rem;
+  color: var(--text2);
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+/* ── RESPONSIVE CONTEXT ── */
+@media(max-width:768px){
+  .navbar-links { display: none; }
+  .hamburger { display: flex; }
+  .form-actions { flex-direction: column; align-items: stretch; }
+  .form-actions .btn { width: 100%; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="navbar-brand"><div class="brand-dot"></div>✦ Admin Portal</div>
+  <div class="navbar-links">
+    <a href="admin_home">Home</a>
+    <a href="adminreg">Admin Reg</a>
+    <a href="medicalreg">Medical Reg</a>
+    <a href="show_medicaldata" class="active">Medicine Data</a>
+    <a href="logout" class="logout">⎋ Logout</a>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="admin_home">🏠 Home</a>
+    <a href="adminreg">👤 Admin Reg</a>
+    <a href="medicalreg">🏥 Medical Reg</a>
+    <a href="show_medicaldata" class="active">📋 Medical Data</a>
+    <a href="logout" class="logout">⎋ Logout</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <h1>Modify <span>Medical Entry</span></h1>
+    <p class="sub">Re-index facility metadata properties directly inside ledger fields</p>
+  </div>
+
+  {% if msg %}
+  <div class="msg-box">⚠️ {{ msg }}</div>
+  {% endif %}
+
+  {% if data %}
+  <div class="card">
+    <form method="post" action="edit_medical1">
+
+      <div class="form-group">
+        <label class="form-label">🏪 Store / Facility Designation</label>
+        <input type="text" name="T1" value="{{ data[0] }}" class="form-input" placeholder="Facility title" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">👤 Authorized Signatory / Owner</label>
+        <input type="text" name="T2" value="{{ data[1] }}" class="form-input" placeholder="Signatory full name" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">📄 Operational Licence Code</label>
+        <input type="text" name="T3" value="{{ data[2] }}" class="form-input" placeholder="Certification hash ID" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">🏠 Physical Address Bounds</label>
+        <input type="text" name="T4" value="{{ data[3] }}" class="form-input" placeholder="Geographic registry address" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">📞 Telecom Routing Target</label>
+        <input type="text" name="T5" value="{{ data[4] }}" class="form-input" placeholder="Primary phone configuration" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">✉️ System Endpoint Key <span style="color: var(--text3); font-size: .68rem; font-weight: 500; text-transform: none;">(Immutable)</span></label>
+        <input readonly type="text" name="T6" value="{{ data[5] }}" class="form-input">
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-navy">✓ Save Modifications</button>
+        <a href="show_medicaldata" class="btn btn-outline-navy">← Return to Records</a>
+      </div>
+
+    </form>
+  </div>
+  {% endif %}
+
+</div>
+
+<script>
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+hamburger.addEventListener('click', function(){
+  const isOpen = mobileMenu.classList.toggle('open');
+  hamburger.classList.toggle('open', isOpen);
+});
+mobileMenu.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    mobileMenu.classList.remove('open');
+    hamburger.classList.remove('open');
+  });
+});
+document.addEventListener('click', function(e){
+  if(!hamburger.contains(e.target) && !mobileMenu.contains(e.target)){
+    mobileMenu.classList.remove('open');
+    hamburger.classList.remove('open');
+  }
+});
+</script>
+</body>
+</html>

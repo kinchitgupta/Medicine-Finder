@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Delete Medical Record</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #edf2f7;
+  --bg2:       #e2eaf4;
+  --surface:   #d6e2ef;
+  --card:      #c9d9ea;
+  --border:    #aec4d9;
+  --accent:    #1d4ed8;
+  --accent2:   #3b82f6;
+  --accent-l:  #bfdbfe;
+  --text:      #0f1e2e;
+  --text2:     #1e3a52;
+  --text3:     #5a7a96;
+  --navy:      #0f2137;
+  --sky:       #93c5fd;
+  --r:         10px;
+  --rL:        16px;
+  --red:       #dc2626;
+  --red-bg:    #fee2e2;
+  --red-border:#fca5a5;
+  --red-text:  #991b1b;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── NAVBAR ── */
+.navbar {
+  background: var(--navy);
+  padding: 0 2rem;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--accent2);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.navbar-brand {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--sky);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.brand-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent2);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%,100%{ box-shadow: 0 0 0 0 rgba(59,130,246,.5); }
+  70%{ box-shadow: 0 0 0 7px rgba(59,130,246,0); }
+}
+.navbar-links { display: flex; align-items: center; gap: 4px; }
+.navbar-links a {
+  text-decoration: none;
+  font-size: .78rem;
+  font-weight: 600;
+  color: #9fbfaa;
+  padding: 6px 14px;
+  border-radius: 50px;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  transition: background .2s, color .2s;
+}
+.navbar-links a:hover { background: rgba(255,255,255,.1); color: #fff; }
+.navbar-links a.active { background: rgba(59,130,246,.2); color: var(--sky); }
+.navbar-links a.logout { background: rgba(59,130,246,.15); color: var(--sky); border: 1px solid rgba(59,130,246,.3); }
+.navbar-links a.logout:hover { background: rgba(59,130,246,.3); }
+
+/* Hamburger Menu Toggle */
+.hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 6px; border-radius: 8px; }
+.hamburger span { display: block; width: 22px; height: 2px; background: #9fbfaa; border-radius: 2px; transition: transform .3s, opacity .3s; }
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.mobile-menu {
+  display: none;
+  position: absolute; top: 58px; left: 0; right: 0;
+  background: var(--navy);
+  border-bottom: 2px solid var(--accent2);
+  z-index: 90;
+}
+.mobile-menu.open { display: block; }
+.mobile-menu a {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 24px;
+  text-decoration: none;
+  font-size: .88rem; font-weight: 600;
+  color: #9fbfaa;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  text-transform: uppercase; letter-spacing: .03em;
+  transition: background .2s;
+}
+.mobile-menu a:hover { background: rgba(255,255,255,.07); color: #fff; }
+.mobile-menu a.active { color: var(--sky); }
+.mobile-menu a.logout { color: var(--sky); }
+
+/* ── PAGE WRAP ── */
+.wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+  width: 100%;
+}
+
+/* ── PAGE HEADER ── */
+.page-header {
+  margin-bottom: 2rem;
+}
+.page-header h1 {
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -.01em;
+}
+.page-header h1 span { color: var(--red); }
+.page-header .sub { font-size: .8rem; color: var(--text3); margin-top: 3px; }
+
+/* ── DESTRUCTIVE SYSTEM WARNING ── */
+.warn-banner {
+  background: var(--red-bg);
+  border: 1px solid var(--red-border);
+  border-radius: var(--rL);
+  padding: 1.2rem 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 1.5rem;
+}
+.warn-icon { font-size: 1.4rem; line-height: 1; }
+.warn-text {
+  font-size: .84rem;
+  color: var(--red-text);
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+/* ── FILE CARD ── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--rL);
+  padding: 2rem;
+}
+
+.detail-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.detail-row:last-of-type { border-bottom: none; }
+
+.detail-icon {
+  width: 38px; height: 38px; border-radius: var(--r);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; flex-shrink: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+.detail-label {
+  font-size: .68rem;
+  color: var(--text3);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin-bottom: 2px;
+}
+.detail-value {
+  font-size: .92rem;
+  color: var(--text);
+  font-weight: 700;
+}
+
+/* ── ACTIONS ── */
+.form-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+/* ── BUTTON METRICS ── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  text-decoration: none; font-size: .8rem; font-weight: 700;
+  padding: 11px 20px; border-radius: var(--r);
+  transition: all .18s; cursor: pointer; border: none; font-family: inherit;
+}
+.btn-delete {
+  background: var(--red);
+  color: #fff;
+}
+.btn-delete:hover {
+  background: #b91c1c;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220,38,38,.25);
+}
+.btn-outline-navy {
+  background: transparent; color: var(--text2);
+  border: 1px solid var(--border);
+}
+.btn-outline-navy:hover {
+  background: var(--border); color: var(--navy);
+}
+
+/* ── STATUS MESSAGES ── */
+.msg-box {
+  background: var(--surface);
+  border-left: 4px solid var(--accent2);
+  border-radius: var(--r);
+  padding: 14px 18px;
+  font-size: .86rem;
+  color: var(--text2);
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .navbar-links { display: none; }
+  .hamburger { display: flex; }
+  .form-actions { flex-direction: column; align-items: stretch; }
+  .form-actions form, .form-actions .btn { width: 100%; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="navbar-brand"><div class="brand-dot"></div>✦ Admin Portal</div>
+  <div class="navbar-links">
+    <a href="admin_home">Home</a>
+    <a href="adminreg">Admin Reg</a>
+    <a href="medicalreg">Medical Reg</a>
+    <a href="show_medicaldata" class="active">Medicine Data</a>
+    <a href="logout" class="logout">⎋ Logout</a>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="admin_home">🏠 Home</a>
+    <a href="adminreg">👤 Admin Reg</a>
+    <a href="medicalreg">🏥 Medical Reg</a>
+    <a href="show_medicaldata" class="active">📋 Medical Data</a>
+    <a href="logout" class="logout">⎋ Logout</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <h1>Review & <span>Delete Record</span></h1>
+    <p class="sub">Verify the physical identity values before permanently dropping the profile from database</p>
+  </div>
+
+  {% if msg %}
+  <div class="msg-box">ℹ️ {{ msg }}</div>
+  {% endif %}
+
+  {% if data %}
+  <!-- WARNING BANNER -->
+  <div class="warn-banner">
+    <div class="warn-icon">⚠️</div>
+    <div class="warn-text">
+      Critical Alert: You are performing a terminal balance evaluation. Executing this step permanently clears this medical infrastructure profile from the cluster index.
+    </div>
+  </div>
+
+  <div class="card">
+
+    <div class="detail-row">
+      <div class="detail-icon">🏪</div>
+      <div>
+        <div class="detail-label">Facility / Store Name</div>
+        <div class="detail-value">{{ data[0] }}</div>
+      </div>
+    </div>
+
+    <div class="detail-row">
+      <div class="detail-icon">👤</div>
+      <div>
+        <div class="detail-label">Authorized Owner</div>
+        <div class="detail-value">{{ data[1] }}</div>
+      </div>
+    </div>
+
+    <div class="detail-row">
+      <div class="detail-icon">📄</div>
+      <div>
+        <div class="detail-label">Ecosystem License Keys</div>
+        <div class="detail-value">{{ data[2] }}</div>
+      </div>
+    </div>
+
+    <div class="detail-row">
+      <div class="detail-icon">🏠</div>
+      <div>
+        <div class="detail-label">Registered Location</div>
+        <div class="detail-value">{{ data[3] }}</div>
+      </div>
+    </div>
+
+    <div class="detail-row">
+      <div class="detail-icon">📞</div>
+      <div>
+        <div class="detail-label">Telecom Line</div>
+        <div class="detail-value">{{ data[4] }}</div>
+      </div>
+    </div>
+
+    <div class="detail-row">
+      <div class="detail-icon">✉️</div>
+      <div>
+        <div class="detail-label">Data Routing Alias (Email)</div>
+        <div class="detail-value" style="color: var(--accent);">{{ data[5] }}</div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <form method="post" action="del_medical1" onsubmit="return confirm('Permanently delete {{ data[0] }}? This cannot be undone.')" style="margin:0; display:inline-block;">
+        <input type="hidden" name="T2" value="{{ data[5] }}">
+        <button type="submit" class="btn btn-delete">🗑️ Purge Profile</button>
+      </form>
+      <a href="show_medicaldata" class="btn btn-outline-navy">← Cancel Operation</a>
+    </div>
+
+  </div>
+  {% endif %}
+
+</div>
+
+<script>
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+hamburger.addEventListener('click', function(){
+  const isOpen = mobileMenu.classList.toggle('open');
+  hamburger.classList.toggle('open', isOpen);
+});
+mobileMenu.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    mobileMenu.classList.remove('open');
+    hamburger.classList.remove('open');
+  });
+});
+document.addEventListener('click', function(e){
+  if(!hamburger.contains(e.target) && !mobileMenu.contains(e.target)){
+    mobileMenu.classList.remove('open');
+    hamburger.classList.remove('open');
+  }
+});
+</script>
+</body>
+</html>

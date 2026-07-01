@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Edit Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy:#1e40af;--navy-d:#1e3a8a;--blue:#3b82f6;--sky:#38bdf8;
+  --mint:#4ecf8e;--mint-l:#e8f7f0;--mint-m:#b8e8d0;
+  --bg-grad-a:#e0f2fe;--bg-grad-b:#f0fdf4;
+  --surface:#f0f6ff;--surface-2:#ffffff;
+  --border-l:#bae6fd;--border-m:#93c5fd;
+  --text-h:#1e3a8a;--text-m:#64748b;--text-faint:#94a3b8;
+  --r-sm:10px;--r-md:16px;--r-lg:24px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  min-height:100vh;
+  background:linear-gradient(135deg,var(--bg-grad-a) 0%,var(--bg-grad-b) 100%);
+  font-family:'Nunito',sans-serif;
+  display:flex;flex-direction:column;
+}
+
+/* ── NAVBAR ─────────────────────── */
+.navbar{
+  background:var(--navy);padding:0 2.5rem;height:60px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:2px solid var(--blue);
+  position:sticky;top:0;z-index:100;
+  animation:fadeDown .4s ease both;
+}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.navbar-brand{
+  font-family:'Outfit',sans-serif;font-size:1.05rem;font-weight:700;
+  color:var(--sky);letter-spacing:.01em;
+  display:flex;align-items:center;gap:8px;
+}
+.brand-dot{
+  width:8px;height:8px;border-radius:50%;background:var(--mint);
+  box-shadow:0 0 10px rgba(78,207,142,.7);animation:pulse 2s infinite;
+}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(78,207,142,.5)}70%{box-shadow:0 0 0 8px rgba(78,207,142,0)}}
+.navbar-links{display:flex;align-items:center;gap:4px;}
+.navbar-links a{
+  text-decoration:none;font-size:.78rem;font-weight:600;
+  color:#93c5fd;padding:6px 14px;border-radius:50px;
+  letter-spacing:.02em;text-transform:uppercase;
+  transition:background .2s,color .2s;
+}
+.navbar-links a:hover{background:rgba(255,255,255,.1);color:#fff;}
+.navbar-links a.active{background:rgba(56,189,248,.2);color:var(--sky);}
+.navbar-links a.logout{
+  background:rgba(78,207,142,.15);color:#6ee7b7;
+  border:1px solid rgba(78,207,142,.3);
+}
+.navbar-links a.logout:hover{background:rgba(78,207,142,.25);color:#fff;}
+
+/* ── PAGE ───────────────────────── */
+.page{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  padding:3rem 1.5rem;
+}
+
+/* ── SHELL ──────────────────────── */
+.shell{
+  width:100%;max-width:600px;
+  animation:rise .5s cubic-bezier(.16,1,.3,1) .1s both;
+}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── CARD ───────────────────────── */
+.card{
+  background:var(--surface-2);
+  border-radius:var(--r-lg);
+  border:1px solid var(--border-l);
+  box-shadow:0 32px 80px rgba(30,64,175,.1),0 4px 20px rgba(30,64,175,.06);
+  overflow:hidden;
+}
+
+/* ── PROFILE BANNER ─────────────── */
+.banner{
+  background:linear-gradient(135deg,#eff6ff 0%,#f0fdf4 100%);
+  border-bottom:1px solid var(--border-l);
+  padding:1.75rem 2rem;
+  display:flex;align-items:center;gap:1.25rem;
+}
+.avatar{
+  width:64px;height:64px;border-radius:18px;
+  background:linear-gradient(135deg,var(--mint-m),var(--sky));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:700;
+  color:var(--navy-d);
+  border:3px solid var(--border-l);
+  flex-shrink:0;
+}
+.banner-text h2{
+  font-family:'Outfit',sans-serif;
+  font-size:1.4rem;font-weight:700;
+  color:var(--text-h);letter-spacing:-.015em;
+}
+.banner-text h2 em{font-style:normal;color:#2563eb;font-weight:800;}
+.banner-text p{font-size:.78rem;color:var(--text-m);margin-top:3px;}
+
+/* ── FORM AREA ──────────────────── */
+.form-area{padding:1.75rem 2rem 2rem;}
+
+.field{display:flex;flex-direction:column;margin-bottom:1.2rem;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.2rem;}
+
+.field label{
+  font-family:'Outfit',sans-serif;
+  font-size:.7rem;font-weight:600;
+  letter-spacing:.07em;text-transform:uppercase;
+  color:var(--text-m);margin-bottom:5px;transition:color .2s;
+}
+.field:focus-within label{color:#2563eb;}
+.field-inner{position:relative;display:flex;align-items:center;}
+.field-inner .icon{
+  position:absolute;left:12px;font-size:.95rem;
+  pointer-events:none;opacity:.45;
+}
+.field input{
+  width:100%;
+  border:1.5px solid #e2e8f0;border-radius:var(--r-sm);
+  background:var(--surface);
+  padding:11px 14px 11px 38px;
+  font-size:.9rem;font-family:'Nunito',sans-serif;
+  color:var(--text-h);font-weight:500;outline:none;
+  transition:border-color .2s,background .2s,box-shadow .2s;
+}
+.field input:focus{
+  border-color:#3b82f6;background:#fff;
+  box-shadow:0 0 0 3px rgba(59,130,246,.12);
+}
+.field input::placeholder{color:var(--text-faint);font-weight:400;}
+
+/* ── CHANGED INDICATOR ──────────── */
+.field input.changed{
+  border-color:var(--mint);
+  background:var(--mint-l);
+}
+
+/* ── FOOTER ─────────────────────── */
+.form-foot{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:1.25rem;
+  border-top:1px solid var(--border-l);
+  margin-top:.25rem;
+}
+.btn-cancel{
+  text-decoration:none;
+  font-size:.8rem;font-weight:600;color:var(--text-m);
+  padding:10px 18px;border-radius:var(--r-sm);
+  border:1.5px solid #e2e8f0;
+  background:transparent;
+  transition:all .2s;cursor:pointer;
+  font-family:'Nunito',sans-serif;
+}
+.btn-cancel:hover{background:var(--surface);color:var(--navy);}
+.btn-submit{
+  background:var(--navy);color:#fff;
+  border:none;border-radius:var(--r-sm);
+  padding:11px 26px;font-size:.85rem;font-weight:700;
+  font-family:'Outfit',sans-serif;
+  letter-spacing:.02em;cursor:pointer;
+  box-shadow:0 4px 16px rgba(30,64,175,.28);
+  transition:all .2s cubic-bezier(.4,0,.2,1);
+}
+.btn-submit:hover{background:#1d4ed8;transform:translateY(-2px);box-shadow:0 8px 24px rgba(29,78,216,.35);}
+.btn-submit:active{transform:translateY(0);}
+
+/* ── NO DATA STATE ──────────────── */
+.empty-state{
+  padding:3rem 2rem;text-align:center;
+}
+.empty-state .empty-icon{font-size:2.5rem;margin-bottom:.75rem;}
+.empty-state h3{
+  font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:700;
+  color:var(--text-h);margin-bottom:.4rem;
+}
+.empty-state p{font-size:.82rem;color:var(--text-m);}
+.empty-state a{
+  display:inline-block;margin-top:1.25rem;
+  text-decoration:none;font-size:.82rem;font-weight:600;
+  color:var(--navy);
+}
+
+/* ── RESULT MSG ─────────────────── */
+.result-box{
+  margin:0 2rem 2rem;
+  padding:12px 16px;border-radius:var(--r-sm);
+  font-size:.82rem;font-weight:500;
+  animation:popIn .25s ease-out;
+}
+@keyframes popIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.result-box.info{background:#dbeafe;border:1px solid #bfdbfe;color:#1e40af;}
+</style>
+
+<script>
+function markChanged(input){
+  input.classList.toggle('changed',input.value!==input.defaultValue);
+}
+</script>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-brand"><div class="brand-dot"></div>✦ Admin Portal</div>
+  <div class="navbar-links">
+    <a href="admin_home">Home</a>
+    <a href="adminreg">Admin Reg</a>
+    <a href="medicalreg">Medical Reg</a>
+    <a href="show_medicaldata">Medicine Data</a>
+    <a href="logout" class="logout">⎋ Logout</a>
+  </div>
+</nav>
+
+<div class="page">
+<div class="shell">
+<div class="card">
+
+  <div class="banner">
+    <div class="avatar">AD</div>
+    <div class="banner-text">
+      <h2>Edit <em>Profile</em></h2>
+      <p>Update your administrator details below</p>
+    </div>
+  </div>
+
+  {% if data %}
+  <div class="form-area">
+    <form method="POST" action="edit_admin_profile">
+
+      <div class="field-row">
+        <div class="field">
+          <label for="t1">Full Name</label>
+          <div class="field-inner">
+            <span class="icon">👤</span>
+            <input type="text" id="t1" name="T1" value="{{ data[0] }}"
+              oninput="markChanged(this)" placeholder="Your name">
+          </div>
+        </div>
+        <div class="field">
+          <label for="t3">Contact Number</label>
+          <div class="field-inner">
+            <span class="icon">📞</span>
+            <input type="text" id="t3" name="T3" value="{{ data[2] }}"
+              oninput="markChanged(this)" placeholder="Phone number">
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="t2">Address</label>
+        <div class="field-inner">
+          <span class="icon">🏠</span>
+          <input type="text" id="t2" name="T2" value="{{ data[1] }}"
+            oninput="markChanged(this)" placeholder="Street, City, State">
+        </div>
+      </div>
+
+      <div class="form-foot">
+        <a href="admin_home" class="btn-cancel">← Cancel</a>
+        <button type="submit" class="btn-submit">Save Changes ✓</button>
+      </div>
+
+    </form>
+  </div>
+
+  {% else %}
+  <div class="empty-state">
+    <div class="empty-icon">🔍</div>
+    <h3> Go To Profile </h3>
+    <a href="admin_home">← Return to Home</a>
+  </div>
+  {% endif %}
+
+</div>
+
+{% if result  %}
+<div class="result-box info">ℹ️ {{ result }}</div>
+{% endif %}
+
+</div>
+</div>
+</body>
+</html>

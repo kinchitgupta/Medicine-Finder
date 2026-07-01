@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicine Finder - Search Portal</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Strict single-screen layout context with clean overflow rules */
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* Brighter, ultra-clean spring medical color combo background */
+        body {
+            background: linear-gradient(135deg, #f4fbf9 0%, #eef9ff 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            min-height: 100dvh;
+            padding: 20px;
+        }
+
+        /* Shared layout engine matching login card architecture */
+        .search-wrapper {
+            display: flex;
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 12px 35px rgba(13, 148, 136, 0.06);
+            width: 100%;
+            max-width: 1050px;
+            height: 620px; /* Fixed functional structural ceiling */
+            overflow: hidden;
+        }
+
+        /* Left Control Panel Base Panel */
+        .search-sidebar {
+            flex: 1;
+            background: linear-gradient(145deg, #14b8a6 0%, #0d9488 100%);
+            position: relative;
+            color: #ffffff;
+            padding: 3rem 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+
+        /* Decorative ambient geometry nodes */
+        .sidebar-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .c1 { width: 90px; height: 90px; top: -15px; right: -15px; }
+        .c2 { width: 60px; height: 60px; bottom: 8%; left: -10px; }
+
+        /* Top Bar Navigation Element Wrapper */
+        .nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 2;
+            width: 100%;
+        }
+
+        .brand-title {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .brand-title::before {
+            content: '✚';
+            font-size: 1rem;
+            color: #ccfbf1;
+        }
+
+        /* High-utility clean link matching layout properties */
+        .login-btn {
+            font-size: 0.85rem;
+            text-decoration: none;
+            color: #ffffff;
+            background: rgba(15, 118, 110, 0.4);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.2s ease-in-out;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .login-btn:hover {
+            background: #ffffff;
+            color: #0d9488;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Centered Context Input Block */
+        .search-center {
+            z-index: 2;
+            margin: auto 0;
+            width: 100%;
+        }
+
+        .search-center h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .search-center p.tagline {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #f0fdfa;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            font-size: 1.1rem;
+            color: #0d9488;
+            pointer-events: none;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 0.95rem 1rem 0.95rem 2.8rem;
+            background-color: #ffffff;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            outline: none;
+            transition: all 0.2s ease-in-out;
+            color: #334155;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        input[type="text"]:focus {
+            box-shadow: 0 0 0 4px rgba(254, 254, 254, 0.25);
+        }
+
+        button {
+            width: 100%;
+            padding: 0.95rem;
+            background: #111827; /* Dark slate anchor color for high contrast action */
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            margin-top: 0.5rem;
+            box-shadow: 0 4px 12px rgba(17, 24, 39, 0.15);
+        }
+
+        button:hover {
+            background: #1f2937;
+            box-shadow: 0 6px 16px rgba(17, 24, 39, 0.25);
+        }
+
+        button:active {
+            transform: scale(0.99);
+        }
+
+        /* Right Content Space: Scrollable dynamic layout tracking system cards */
+        .results-container {
+            flex: 1.3;
+            padding: 2.5rem;
+            background-color: #fafdfc;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto; /* Keeps scroll bars strictly self-contained within results */
+        }
+
+        /* Custom scrollbar handling metrics */
+        .results-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        .results-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .results-container::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        .results-header {
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #f0fdfa;
+        }
+
+        .results-header h2 {
+            color: #1f2937;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        /* Micro UI layout container objects */
+        .medicine-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            transition: all 0.2s ease-in-out;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 0.5rem;
+        }
+
+        .medicine-card:hover {
+            border-color: #2dd4bf;
+            box-shadow: 0 6px 16px rgba(13, 148, 136, 0.04);
+            transform: translateY(-1px);
+        }
+
+        .med-main-info h3 {
+            color: #0f766e;
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .med-type {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            background: #ccfbf1;
+            color: #0d9488;
+            padding: 3px 10px;
+            border-radius: 50px;
+            text-transform: uppercase;
+        }
+
+        .med-price-tag {
+            text-align: right;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #111827;
+        }
+
+        .store-details {
+            grid-column: span 2;
+            margin-top: 0.5rem;
+            padding-top: 0.75rem;
+            border-top: 1px dashed #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+
+        .store-name-block strong {
+            color: #334155;
+        }
+
+        .empty-state {
+            margin: auto;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .empty-state-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .info-msg {
+            padding: 1rem;
+            background-color: #e0f2fe;
+            border-left: 4px solid #0284c7;
+            color: #0369a1;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .credit-footer {
+            margin-top: auto;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #94a3b8;
+            font-weight: 600;
+            z-index: 2;
+            padding-top: 1rem;
+        }
+
+        /* Viewport configuration management layer */
+        @media (max-width: 768px) {
+            .search-wrapper {
+                flex-direction: column;
+                max-width: 420px;
+                height: auto;
+                max-height: 95vh;
+            }
+            .search-sidebar {
+                padding: 1.5rem;
+            }
+            .search-center h1 {
+                font-size: 1.6rem;
+            }
+            .search-center p.tagline {
+                display: none;
+            }
+            .results-container {
+                padding: 1.5rem;
+                height: 320px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="search-wrapper">
+    <!-- Left Interaction & Search Controller System Panel -->
+    <div class="search-sidebar">
+        <div class="sidebar-circle c1"></div>
+        <div class="sidebar-circle c2"></div>
+
+        <div class="nav-header">
+            <span class="brand-title">Medicine Finder</span>
+            <a href="login" class="login-btn">Portal Login</a>
+        </div>
+
+        <div class="search-center">
+            <h1>Find Medicine</h1>
+            <p class="tagline">Enter your therapeutic or verification medicine specifications below to parse real-time marketplace stock configurations.</p>
+
+            <form method="post" action="/">
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔍</span>
+                        <input type="text" name="M1" value="{{ mname or '' }}" placeholder="Search Medicine Name..." required>
+                    </div>
+                </div>
+                <button type="submit">Search Stock</button>
+            </form>
+        </div>
+
+        <div class="credit-footer">
+            Made by Kinchit Gupta
+        </div>
+    </div>
+
+    <!-- Right Dynamic Output Stream Interface Panel -->
+    <div class="results-container">
+        <div class="results-header">
+            <h2>Inventory Records</h2>
+        </div>
+
+        {% if data %}
+            {% for d in data %}
+                <!-- Dynamic structural data card -->
+                <div class="medicine-card">
+                    <div class="med-main-info">
+                        <h3>{{ d[7] }}</h3>
+                        <span class="med-type">{{ d[10] }}</span>
+                    </div>
+                    <div class="med-price-tag">
+                        ₹{{ d[11] }}
+                    </div>
+                    <div class="store-details">
+                        <div class="store-name-block">
+                            🏪 <strong>{{ d[0] }}</strong> (Prop: {{ d[1] }})
+                        </div>
+                        <div class="contact-block">
+                            📞 {{ d[4] }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% elif msg %}
+            <div class="info-msg">
+                {{ msg }}
+            </div>
+        {% else %}
+            <!-- Initial landing layout prompt standard view  configuration state -->
+            <div class="empty-state">
+                <span class="empty-state-icon">📋</span>
+                Ready for query lookup. Enter a parameter value to display active branch listings.
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+</body>
+</html>

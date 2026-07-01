@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Edit Medicine – Medical Portal</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#edf7f2; --bg2:#d9f0e6; --surface:#c5e8d8; --card:#b0ddc8;
+  --border:#7ec4a0; --accent:#0d7a4e; --accent2:#16a363; --accent-l:#bbf0d6;
+  --text:#0a1f15; --text2:#1a3d28; --text3:#4a7a61; --dark:#071a10;
+  --teal:#6ee7b7; --red:#dc2626; --r:10px; --rL:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body {
+  min-height:100vh;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);
+  background-color:var(--bg);
+  background-image:
+    radial-gradient(circle at 15% 20%,rgba(22,163,99,.10) 0%,transparent 45%),
+    radial-gradient(circle at 85% 75%,rgba(13,122,78,.08) 0%,transparent 45%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='none' stroke='rgba(13,122,78,0.06)' stroke-width='1'%3E%3Crect x='22' y='8' width='16' height='44' rx='4'/%3E%3Crect x='8' y='22' width='44' height='16' rx='4'/%3E%3C/g%3E%3C/svg%3E");
+  background-size:auto,auto,60px 60px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;
+}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.card {
+  background:var(--card);border:1px solid var(--border);border-radius:var(--rL);
+  padding:2.5rem 2.25rem;width:100%;max-width:520px;
+  animation:rise .45s cubic-bezier(.16,1,.3,1) both;
+}
+.card-head {
+  display:flex;align-items:center;gap:12px;margin-bottom:2rem;
+  padding-bottom:1rem;border-bottom:1px solid var(--border);
+}
+.card-icon{width:46px;height:46px;border-radius:12px;background:var(--accent-l);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.3rem;}
+.card-head h1{font-size:1.3rem;font-weight:700;color:var(--text);}
+.card-head p {font-size:.78rem;color:var(--text3);margin-top:2px;}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 1.5rem;}
+.field{margin-bottom:1.1rem;}
+.field.full{grid-column:span 2;}
+.field label{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);margin-bottom:5px;}
+.field input{
+  width:100%;padding:10px 12px;
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:var(--r);font-size:.88rem;font-weight:600;
+  color:var(--text);font-family:inherit;outline:none;
+  transition:border-color .2s,background .2s;
+}
+.field input:focus{border-color:var(--accent2);background:var(--bg2);}
+.field input[readonly]{background:var(--bg2);color:var(--text3);cursor:not-allowed;}
+.field .err{font-size:.72rem;color:var(--red);margin-top:4px;min-height:14px;display:block;font-weight:600;}
+
+.btn-row{display:flex;gap:10px;margin-top:1.5rem;padding-top:1.2rem;border-top:1px solid var(--border);grid-column:span 2;}
+.btn{
+  flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  padding:11px 16px;border-radius:var(--r);border:none;cursor:pointer;
+  font-family:inherit;font-size:.81rem;font-weight:700;transition:all .18s;text-decoration:none;
+}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-primary:hover{background:#0a5c3a;transform:translateY(-1px);}
+.btn-outline{background:var(--surface);color:var(--text2);border:1px solid var(--border);}
+.btn-outline:hover{background:var(--accent-l);color:var(--accent);}
+</style>
+<script>
+function validateEdit(){
+  let ok=true;
+  ['sp2','sp3','sp4','sp5','sp6'].forEach(id=>document.getElementById(id).textContent='');
+  const nameRe=/^[A-Za-z ]{2,50}$/;
+  if(!nameRe.test(document.getElementById('t2').value.trim())){showE('sp2','Enter valid name');ok=false;}
+  if(!nameRe.test(document.getElementById('t3').value.trim())){showE('sp3','Enter valid company');ok=false;}
+  if(!/^[A-Za-z0-9\-\/]{4,20}$/.test(document.getElementById('t4').value.trim())){showE('sp4','Enter valid licence');ok=false;}
+  if(!nameRe.test(document.getElementById('t5').value.trim())){showE('sp5','Enter valid type');ok=false;}
+  const p=document.getElementById('t6').value.trim();
+  if(!/^\d+(\.\d{1,2})?$/.test(p)||parseFloat(p)<=0){showE('sp6','Enter valid price');ok=false;}
+  return ok;
+}
+function showE(id,msg){document.getElementById(id).textContent=msg;}
+</script>
+</head>
+<body>
+<div class="card">
+  <div class="card-head">
+    <div class="card-icon">✏️</div>
+    <div><h1>Edit Medicine</h1><p>Update medicine details below</p></div>
+  </div>
+  {% if data %}
+  <form method="post" action="edit_medicine1" onsubmit="return validateEdit()">
+    <div class="form-grid">
+      <div class="field">
+        <label>Medicine ID</label>
+        <input readonly type="text" name="T1" id="t1" value="{{ data[0] }}">
+      </div>
+      <div class="field">
+        <label>Medicine Name</label>
+        <input type="text" name="T2" id="t2" value="{{ data[1] }}" placeholder="e.g. Paracetamol">
+        <span class="err" id="sp2"></span>
+      </div>
+      <div class="field">
+        <label>Company</label>
+        <input type="text" name="T3" id="t3" value="{{ data[2] }}" placeholder="e.g. Sun Pharma">
+        <span class="err" id="sp3"></span>
+      </div>
+      <div class="field full">
+        <label>Licence Number</label>
+        <input type="text" name="T4" id="t4" value="{{ data[3] }}" placeholder="Licence number">
+        <span class="err" id="sp4"></span>
+      </div>
+      <div class="field">
+        <label>Medicine Type</label>
+        <input type="text" name="T5" id="t5" value="{{ data[4] }}" placeholder="e.g. Tablet, Syrup">
+        <span class="err" id="sp5"></span>
+      </div>
+      <div class="field">
+        <label>Price (₹)</label>
+        <input type="text" name="T6" id="t6" value="{{ data[5] }}" placeholder="e.g. 49.99">
+        <span class="err" id="sp6"></span>
+      </div>
+      <div class="btn-row">
+        <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+        <a href="show_medicine" class="btn btn-outline">← Cancel</a>
+      </div>
+    </div>
+  </form>
+  {% endif %}
+</div>
+</body>
+</html>

@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Medical Home</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #edf7f2;
+  --bg2:       #d9f0e6;
+  --surface:   #c5e8d8;
+  --card:      #b0ddc8;
+  --border:    #7ec4a0;
+  --accent:    #0d7a4e;
+  --accent2:   #16a363;
+  --accent-l:  #bbf0d6;
+  --text:      #0a1f15;
+  --text2:     #1a3d28;
+  --text3:     #4a7a61;
+  --dark:      #071a10;
+  --teal:      #6ee7b7;
+  --r:         10px;
+  --rL:        16px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(22,163,99,0.10) 0%, transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(13,122,78,0.08) 0%, transparent 45%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='none' stroke='rgba(13,122,78,0.06)' stroke-width='1'%3E%3Crect x='22' y='8' width='16' height='44' rx='4'/%3E%3Crect x='8' y='22' width='44' height='16' rx='4'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: auto, auto, 60px 60px;
+}
+
+/* ── NAVBAR ── */
+.navbar {
+  background: var(--dark);
+  padding: 0 2rem;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--accent2);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.navbar-brand {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--teal);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.brand-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent2);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%,100%{ box-shadow: 0 0 0 0 rgba(22,163,99,.5); }
+  70%{ box-shadow: 0 0 0 7px rgba(22,163,99,0); }
+}
+.navbar-links { display: flex; align-items: center; gap: 4px; }
+.navbar-links a {
+  text-decoration: none;
+  font-size: .78rem;
+  font-weight: 600;
+  color: #7abf99;
+  padding: 6px 14px;
+  border-radius: 50px;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  transition: background .2s, color .2s;
+}
+.navbar-links a:hover { background: rgba(255,255,255,.1); color: #fff; }
+.navbar-links a.active { background: rgba(22,163,99,.2); color: var(--teal); }
+.navbar-links a.logout { background: rgba(22,163,99,.15); color: var(--teal); border: 1px solid rgba(22,163,99,.3); }
+.navbar-links a.logout:hover { background: rgba(22,163,99,.3); }
+
+/* hamburger */
+.hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 6px; border-radius: 8px; }
+.hamburger span { display: block; width: 22px; height: 2px; background: #7abf99; border-radius: 2px; transition: transform .3s, opacity .3s; }
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.mobile-menu {
+  display: none;
+  position: absolute; top: 58px; left: 0; right: 0;
+  background: var(--dark);
+  border-bottom: 2px solid var(--accent2);
+  z-index: 90;
+}
+.mobile-menu.open { display: block; }
+.mobile-menu a {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 24px;
+  text-decoration: none;
+  font-size: .88rem; font-weight: 600;
+  color: #7abf99;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  text-transform: uppercase; letter-spacing: .03em;
+  transition: background .2s;
+}
+.mobile-menu a:hover { background: rgba(255,255,255,.07); color: #fff; }
+.mobile-menu a.active, .mobile-menu a.logout { color: var(--teal); }
+
+/* ── PAGE WRAP ── */
+.wrap {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+  width: 100%;
+}
+
+/* ── PAGE HEADER ── */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.6rem;
+}
+.page-header h1 {
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -.01em;
+}
+.page-header h1 span { color: var(--accent); }
+.page-header .sub { font-size: .8rem; color: var(--text3); margin-top: 3px; }
+.badge-med {
+  display: flex; align-items: center; gap: 7px;
+  background: var(--accent-l);
+  border: 1px solid var(--border);
+  padding: 7px 14px; border-radius: 50px;
+  font-size: .71rem; font-weight: 700;
+  color: var(--accent);
+  letter-spacing: .03em;
+  flex-shrink: 0;
+}
+.blink { width: 7px; height: 7px; border-radius: 50%; background: var(--accent2); animation: pulse 1.8s infinite; }
+
+/* ── CARD ── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--rL);
+  transition: box-shadow .2s, transform .2s;
+}
+.card:hover { box-shadow: 0 6px 24px rgba(13,122,78,.15); transform: translateY(-1px); }
+
+/* ── HERO CARD ── */
+.hero-card {
+  display: grid;
+  grid-template-columns: 180px 1fr 260px;
+  margin-bottom: 1.4rem;
+  overflow: hidden;
+}
+.hero-left {
+  padding: 2rem 1.5rem;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: .5rem;
+  border-right: 1px solid var(--border);
+  background: var(--surface);
+}
+.avatar-ring {
+  width: 84px; height: 84px;
+  border-radius: 50%;
+  border: 3px solid var(--accent2);
+  padding: 3px;
+  animation: float 4s ease-in-out infinite;
+}
+@keyframes float { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-5px); } }
+.avatar-inner {
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  background: var(--accent-l);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; font-weight: 700; color: var(--dark);
+}
+.cross-icon {
+  position: relative;
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+}
+.cross-icon::before, .cross-icon::after {
+  content: '';
+  position: absolute;
+  background: var(--accent);
+  border-radius: 2px;
+}
+.cross-icon::before { width: 14px; height: 4px; }
+.cross-icon::after  { width: 4px;  height: 14px; }
+
+.profile-name { font-size: .95rem; font-weight: 700; color: var(--text); text-align: center; }
+.profile-role { font-size: .71rem; color: var(--text3); text-align: center; }
+.profile-badge {
+  margin-top: 4px;
+  background: var(--accent-l);
+  color: var(--accent);
+  font-size: .65rem; font-weight: 700;
+  padding: 3px 10px; border-radius: 50px;
+  border: 1px solid var(--border);
+  letter-spacing: .04em;
+}
+
+.hero-centre { padding: 1.5rem 1.75rem; display: flex; flex-direction: column; justify-content: center; }
+.info-list { list-style: none; }
+.info-list li {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: .83rem;
+}
+.info-list li:last-child { border-bottom: none; }
+.info-icon {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .82rem; flex-shrink: 0;
+}
+.info-label { font-size: .66rem; color: var(--text3); display: block; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+.info-value { font-size: .84rem; color: var(--text); font-weight: 600; }
+.hero-actions {
+  display: flex; gap: 8px;
+  margin-top: 1.1rem; padding-top: 1.1rem;
+  border-top: 1px solid var(--border);
+}
+
+.hero-right {
+  padding: 1.4rem 1.5rem;
+  border-left: 1px solid var(--border);
+  background: var(--surface);
+  display: flex; flex-direction: column;
+}
+.card-label {
+  font-size: .67rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .1em;
+  color: var(--text3); display: block; margin-bottom: .8rem;
+}
+
+/* ── PHOTO UPLOAD ── */
+.upload-area {
+  border: 2px dashed var(--border);
+  border-radius: var(--r);
+  background: var(--bg2);
+  padding: 1.4rem 1rem; text-align: center;
+  cursor: pointer; display: block;
+  transition: border-color .2s, background .2s;
+}
+.upload-area:hover { border-color: var(--accent2); background: var(--accent-l); }
+.upload-area input { display: none; }
+.upload-text { font-size: .74rem; color: var(--text2); }
+.upload-text strong { color: var(--accent); }
+.photo-display { border-radius: var(--r); overflow: hidden; position: relative; }
+.photo-display img { width: 100%; height: 155px; object-fit: cover; display: block; }
+.photo-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, transparent 50%, rgba(7,26,16,.5) 100%);
+  display: flex; align-items: flex-end; padding: .7rem;
+  opacity: 0; transition: opacity .2s;
+}
+.photo-display:hover .photo-overlay { opacity: 1; }
+.photo-actions { margin-top: .65rem; display: flex; gap: 8px; }
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+  text-decoration: none; font-size: .77rem; font-weight: 700;
+  padding: 8px 14px; border-radius: var(--r);
+  border: none; cursor: pointer;
+  font-family: inherit; transition: all .18s;
+}
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: #0a5c3a; transform: translateY(-1px); }
+.btn-outline { background: var(--surface); color: var(--text2); border: 1px solid var(--border); }
+.btn-outline:hover { background: var(--accent-l); color: var(--accent); transform: translateY(-1px); }
+.btn-ghost { background: var(--bg2); color: var(--text3); border: 1px solid var(--border); }
+.btn-ghost:hover { background: var(--surface); color: var(--text); }
+.btn-sm { font-size: .72rem; padding: 6px 12px; }
+.btn-full { width: 100%; justify-content: center; }
+
+/* shimmer */
+.shimmer { height: 11px; border-radius: 6px; background: var(--surface); margin-bottom: 8px; }
+
+/* ── BOTTOM ROW ── */
+.bottom-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+
+/* STATUS CARD */
+.status-card { padding: 1.3rem 1.4rem; }
+.status-header { display: flex; align-items: center; gap: 7px; margin-bottom: .9rem; }
+.status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent2); animation: pulse 2s infinite; flex-shrink: 0; }
+.status-title { font-size: .69rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text3); }
+
+.si-list { list-style: none; }
+.si-list li {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 7px 0; border-bottom: 1px solid var(--border); font-size: .78rem;
+}
+.si-list li:last-child { border-bottom: none; }
+.si-key { color: var(--text3); font-size: .69rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+.si-val { font-weight: 700; font-size: .79rem; color: var(--text); display: flex; align-items: center; gap: 5px; }
+.pip { width: 7px; height: 7px; border-radius: 50%; }
+.pip-g { background: var(--accent2); }
+.pip-b { background: #34d399; }
+
+.session-bar {
+  margin-top: .9rem; padding: .65rem .9rem;
+  background: var(--surface);
+  border: 1px solid var(--border); border-radius: var(--r);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.session-label { font-size: .74rem; font-weight: 600; color: var(--text2); display: flex; align-items: center; gap: 7px; }
+
+/* NAV CARD */
+.nav-card { padding: 1.3rem 1.4rem; }
+.link-list { list-style: none; }
+.link-list li { border-bottom: 1px solid var(--border); }
+.link-list li:last-child { border-bottom: none; }
+.link-list a {
+  display: flex; align-items: center; gap: 9px;
+  padding: 9px 4px; text-decoration: none;
+  font-size: .81rem; font-weight: 600; color: var(--text2);
+  border-radius: 8px; transition: color .2s, padding-left .18s, background .2s;
+}
+.link-list a:hover { color: var(--text); padding-left: 8px; background: var(--surface); }
+.link-icon {
+  width: 28px; height: 28px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .82rem; background: var(--surface);
+  border: 1px solid var(--border); flex-shrink: 0; transition: background .2s;
+}
+.link-list a:hover .link-icon { background: var(--accent-l); }
+
+/* flash banner */
+.result-banner {
+  padding: .7rem 1rem; border-radius: var(--r);
+  background: var(--accent-l); border: 1px solid var(--border);
+  font-size: .8rem; font-weight: 600; color: var(--accent);
+  margin-bottom: 1rem; display: flex; align-items: center; gap: 8px;
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:960px){
+  .hero-card { grid-template-columns: 160px 1fr; grid-template-rows: auto auto; }
+  .hero-right { grid-column: span 2; border-left: none; border-top: 1px solid var(--border); flex-direction: row; gap: 1.2rem; align-items: flex-start; }
+  .bottom-row { grid-template-columns: 1fr 1fr; }
+}
+@media(max-width:768px){
+  .navbar-links { display: none; }
+  .hamburger { display: flex; }
+  .hero-card { grid-template-columns: 1fr; }
+  .hero-left { border-right: none; border-bottom: 1px solid var(--border); }
+  .hero-right { grid-column: span 1; flex-direction: column; }
+  .bottom-row { grid-template-columns: 1fr; }
+  .page-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+}
+@media(max-width:480px){
+  .navbar { padding: 0 1rem; }
+  .wrap { padding: 1rem 1rem 3rem; }
+  .hero-actions { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="navbar-brand"><div class="brand-dot"></div>✚ Medical Portal</div>
+  <div class="navbar-links">
+    <a href="medical_home" class="active">Home</a>
+    <a href="medicine_reg">Medicine Reg</a>
+    <a href="show_medicine">Show Medicine</a>
+    <a href="edit_medical_profile">Edit Profile</a>
+    <a href="logout" class="logout">⎋ Logout</a>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="medical_home" class="active">🏥 Home</a>
+  <a href="medicine_reg">💊 Medicine Reg</a>
+  <a href="show_medicine">📋 Show Medicine</a>
+  <a href="edit_medical_profile">✏️ Edit Profile</a>
+  <a href="logout" class="logout">⎋ Logout</a>
+</div>
+
+<div class="wrap">
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div>
+      <h1>Medical <span>Home</span></h1>
+      <p class="sub">Clinic dashboard &amp; management center</p>
+    </div>
+    <div class="badge-med"><span class="blink"></span>🏥 Active Clinic</div>
+  </div>
+
+  <!-- FLASH MESSAGES -->
+  {% if result %}
+  <div class="result-banner">✔ {{ result }}</div>
+  {% endif %}
+  {% if data2 == 'success' %}
+  <div class="result-banner">🗑️ Photo deleted successfully</div>
+  {% elif data2 %}
+  <div class="result-banner">{{ data2 }}</div>
+  {% endif %}
+
+  <!-- HERO CARD -->
+  <div class="card hero-card">
+
+    <!-- Avatar -->
+    <div class="hero-left">
+      <div class="avatar-ring">
+        <div class="avatar-inner">
+          <div class="cross-icon"></div>
+        </div>
+      </div>
+      {% if data %}
+      <p class="profile-name">{{ data[0] }}</p>
+      {% else %}
+      <div class="shimmer" style="width:90px;margin-top:6px"></div>
+      {% endif %}
+      <p class="profile-role">Medical Facility</p>
+      <span class="profile-badge">LICENSED</span>
+    </div>
+
+    <!-- Info rows -->
+    <div class="hero-centre">
+      {% if data %}
+      <ul class="info-list">
+        <li>
+          <div class="info-icon">🏢</div>
+          <div><span class="info-label">Owner Name</span><span class="info-value">{{ data[1] }}</span></div>
+        </li>
+        <li>
+          <div class="info-icon">🪪</div>
+          <div><span class="info-label">Licence Number</span><span class="info-value">{{ data[2] }}</span></div>
+        </li>
+        <li>
+          <div class="info-icon">📍</div>
+          <div><span class="info-label">Street</span><span class="info-value">{{ data[3] }}</span></div>
+        </li>
+        <li>
+          <div class="info-icon">📞</div>
+          <div><span class="info-label">10-digit Number</span><span class="info-value">{{ data[4] }}</span></div>
+        </li>
+      </ul>
+      {% else %}
+      <div class="shimmer"></div>
+      <div class="shimmer" style="width:80%"></div>
+      <div class="shimmer" style="width:65%"></div>
+      <div class="shimmer" style="width:75%"></div>
+      {% endif %}
+      <div class="hero-actions">
+        <a href="edit_medical_profile" class="btn btn-outline">✏️ Edit Profile</a>
+        <a href="change_password_medical" class="btn btn-outline">🔑 Change Password</a>
+      </div>
+    </div>
+
+    <!-- Photo -->
+    <div class="hero-right">
+      <span class="card-label">Clinic Photo</span>
+      {% if photo == 'no' %}
+      <form action="/medical_profile_photo" method="POST" enctype="multipart/form-data">
+        <label class="upload-area" for="photo-input">
+          <div style="font-size:1.5rem;margin-bottom:6px">🏥</div>
+          <p class="upload-text"><strong>Click to upload</strong> or drag &amp; drop</p>
+          <p style="font-size:.68rem;color:var(--text3);margin-top:3px">PNG, JPG, WEBP · max 5MB</p>
+          <input type="file" name="F2" id="photo-input" accept="image/*">
+        </label>
+        <div class="photo-actions">
+          <button type="submit" class="btn btn-primary btn-full btn-sm">✓ Confirm Upload</button>
+        </div>
+      </form>
+      {% else %}
+      <div class="photo-display">
+        <img src="../static/photos/{{ photo }}" alt="Clinic photo">
+        <div class="photo-overlay">
+          <a href="medical_change_profile" class="btn btn-primary btn-sm">🔄 Change</a>
+        </div>
+      </div>
+      <div class="photo-actions">
+        <a href="medical_change_profile" class="btn btn-outline btn-full btn-sm">🔄 Change Photo</a>
+      </div>
+      {% endif %}
+    </div>
+
+  </div><!-- /hero-card -->
+
+  <!-- BOTTOM ROW -->
+  <div class="bottom-row">
+
+    <!-- Clinic Status -->
+    <div class="card status-card">
+      <div class="status-header">
+        <div class="status-dot"></div>
+        <span class="status-title">Clinic Status</span>
+      </div>
+      <ul class="si-list">
+        <li><span class="si-key">Status</span><span class="si-val"><span class="pip pip-g"></span>Online</span></li>
+        <li><span class="si-key">Role</span><span class="si-val">Medical Staff</span></li>
+        <li><span class="si-key">Session</span><span class="si-val"><span class="pip pip-b"></span>Active</span></li>
+        <li><span class="si-key">Access</span><span class="si-val">Medical</span></li>
+        <li><span class="si-key">Portal</span><span class="si-val">v2.0</span></li>
+      </ul>
+      <div class="session-bar">
+        <span class="session-label"><div class="status-dot"></div>Secure session active</span>
+        <a href="logout" class="btn btn-ghost btn-sm">⎋ Logout</a>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="card nav-card">
+      <span class="card-label">Quick Navigation</span>
+      <ul class="link-list">
+        <li><a href="medicine_reg"><div class="link-icon">💊</div>Medicine Registration</a></li>
+        <li><a href="show_medicine"><div class="link-icon">📋</div>Show Medicine</a></li>
+        <li><a href="edit_medical_profile"><div class="link-icon">✏️</div>Edit Profile</a></li>
+        <li><a href="change_password_medical"><div class="link-icon">🔑</div>Change Password</a></li>
+      </ul>
+    </div>
+
+  </div><!-- /bottom-row -->
+
+</div><!-- /wrap -->
+
+<script>
+const fileInput = document.getElementById('photo-input');
+if(fileInput){
+  fileInput.addEventListener('change', function(){
+    const label = this.closest('label');
+    if(this.files && this.files[0])
+      label.querySelector('.upload-text').innerHTML = '<strong>' + this.files[0].name + '</strong>';
+  });
+}
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+hamburger.addEventListener('click', function(){
+  const isOpen = mobileMenu.classList.toggle('open');
+  hamburger.classList.toggle('open', isOpen);
+});
+document.addEventListener('click', function(e){
+  if(!hamburger.contains(e.target) && !mobileMenu.contains(e.target)){
+    mobileMenu.classList.remove('open');
+    hamburger.classList.remove('open');
+  }
+});
+</script>
+</body>
+</html>

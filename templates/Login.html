@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical & Admin Login Portal</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Strict single-screen layout with zero scrolling */
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* Inviting, clean medical palette */
+        body {
+            background: linear-gradient(135deg, #f0faf7 0%, #eef9ff 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            min-height: 100dvh;
+            padding: 20px;
+        }
+
+        /* Two-column professional card frame with smooth corners */
+        .login-wrapper {
+            display: flex;
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 12px 30px rgba(15, 118, 110, 0.08);
+            width: 100%;
+            max-width: 950px;
+            height: 580px;
+            overflow: hidden;
+        }
+
+        /* Left Sidebar: Trustworthy, bright clinical tone */
+        .sidebar {
+            flex: 1;
+            background: linear-gradient(145deg, #14b8a6 0%, #0d9488 100%);
+            position: relative;
+            color: #ffffff;
+            padding: 3rem 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+
+        /* Geometric ambient layout decoration */
+        .sidebar-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .c1 { width: 90px; height: 90px; top: -10px; right: -10px; }
+        .c2 { width: 60px; height: 60px; bottom: 15%; left: -10px; }
+
+        .company-name {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 2;
+            background: rgba(15, 118, 110, 0.4);
+            padding: 6px 16px;
+            border-radius: 50px;
+            width: fit-content;
+        }
+
+        .company-name::before {
+            content: '✚';
+            font-size: 0.9rem;
+            color: #ccfbf1;
+        }
+
+        /* Centered message matrix */
+        .welcome-center {
+            text-align: center;
+            margin: auto 0;
+            z-index: 2;
+        }
+
+        .welcome-center p.subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+            color: #ccfbf1;
+        }
+
+        .welcome-center h2 {
+            font-size: 2.6rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Clean descriptive messaging pane */
+        .welcome-center p.description {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-top: 0.5rem;
+            text-align: center;
+            padding: 14px;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            color: #f0fdfa;
+        }
+
+        /* Right Column Form Space - Soft Mint Base */
+        .form-container {
+            flex: 1.1;
+            padding: 3.5rem 3.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            background-color: #fafdfc;
+        }
+
+        .form-header {
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+
+        .form-header h1 {
+            color: #111827;
+            font-size: 2.1rem;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 1.1rem;
+            position: relative;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Clean user-friendly inline context iconography */
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            font-size: 1.1rem;
+            color: #0d9488;
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 0.95rem 1rem 0.95rem 2.8rem;
+            background-color: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            outline: none;
+            transition: all 0.2s ease-in-out;
+            color: #334155;
+        }
+
+        /* Smooth geometric response feedback styling */
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: #0d9488;
+            box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.08);
+            background-color: #ffffff;
+        }
+
+        .error-message {
+            display: block;
+            color: #ef4444;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 0.3rem;
+            margin-left: 4px;
+            min-height: 1.2rem;
+        }
+
+        /* Modern interactive system actionable interface trigger */
+        button {
+            width: 100%;
+            padding: 0.95rem;
+            background: #0d9488;
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.15);
+            margin-top: 0.5rem;
+        }
+
+        button:hover {
+            background: #115e59;
+            box-shadow: 0 6px 16px rgba(13, 148, 136, 0.25);
+        }
+
+        button:active {
+            transform: scale(0.99);
+        }
+
+        .server-message {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background-color: #fee2e2;
+            border-left: 4px solid #ef4444;
+            color: #991b1b;
+            font-weight: 600;
+            font-size: 0.88rem;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        /* Clean attribution note */
+        .credit-footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        /* Screen adaptation dimensions matrix layout properties */
+        @media (max-width: 768px) {
+            .login-wrapper {
+                flex-direction: column;
+                max-width: 400px;
+                height: auto;
+                max-height: 95vh;
+            }
+            .sidebar {
+                padding: 1.5rem;
+                min-height: 160px;
+            }
+            .welcome-center h2 {
+                font-size: 1.8rem;
+                margin-bottom: 0.5rem;
+            }
+            .welcome-center p.description {
+                display: none;
+            }
+            .form-container {
+                padding: 2rem;
+            }
+            .form-header {
+                margin-bottom: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-wrapper">
+    <!-- Left Sidebar: Modern Friendly Clinical Panel -->
+    <div class="sidebar">
+        <div class="sidebar-circle c1"></div>
+        <div class="sidebar-circle c2"></div>
+
+        <div class="company-name">Medicine Finder</div>
+
+        <div class="welcome-center">
+            <p class="subtitle">Welcome back</p>
+            <h2>Portal Sign In</h2>
+            <p class="description">Only authorized Admin and Medical personnel logins are allowed here. Use this portal to manage user authentication records, securely view workspace credentials, and access detailed role-specific operations.</p>
+        </div>
+
+        <div></div>
+    </div>
+
+    <!-- Right Interaction Space Area -->
+    <div class="form-container">
+        <div class="form-header">
+            <h1>Sign In</h1>
+        </div>
+
+        <form method="post" action="login" onsubmit="return validateForm()">
+
+            <!-- Email Component Section -->
+            <div class="form-group">
+                <div class="input-wrapper">
+                    <span class="input-icon">✉</span>
+                    <input type="text" id="txt1" name="T1" placeholder="Work Email ID">
+                </div>
+                <span id="s1" class="error-message"></span>
+            </div>
+
+            <!-- Password Component Section -->
+            <div class="form-group">
+                <div class="input-wrapper">
+                    <span class="input-icon">🔒</span>
+                    <input type="password" id="txt2" name="T2" placeholder="Credential Password">
+                </div>
+                <span id="s2" class="error-message"></span>
+            </div>
+
+            <button type="submit">Log In</button>
+        </form>
+
+        <!-- Template contextual messaging layer configuration -->
+        {% if data %}
+            <div class="server-message">
+                {{ data }}
+            </div>
+        {% endif %}
+
+        <!-- Branding Signoff -->
+        <div class="credit-footer">
+            <p>Contact For Help :- 📞 7297060340</p>
+            <p> ✉️ kinchitgupta@gmail.com </p>
+        </div>
+    </div>
+</div>
+
+<script>
+function validateForm() {
+    let isValid = true;
+
+    const email = document.getElementById('txt1').value.trim();
+    const password = document.getElementById('txt2').value.trim();
+
+    document.getElementById('s1').innerHTML = "";
+    document.getElementById('s2').innerHTML = "";
+
+    if (email === "") {
+        showError("s1", "Email address is required");
+        isValid = false;
+    }
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showError("s1", "Please enter a valid email format");
+        isValid = false;
+    }
+
+    if (password === "") {
+        showError("s2", "Password configuration is required");
+        isValid = false;
+    }
+    else if (password.length < 4) {
+        showError("s2", "Password must be at least 4 characters");
+        isValid = false;
+    }
+
+    return isValid;
+}
+
+function showError(id, msg) {
+    document.getElementById(id).textContent = msg;
+}
+</script>
+
+</body>
+</html>

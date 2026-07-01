@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Medicine Updated – Medical Portal</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#edf7f2; --bg2:#d9f0e6; --surface:#c5e8d8; --card:#b0ddc8;
+  --border:#7ec4a0; --accent:#0d7a4e; --accent2:#16a363; --accent-l:#bbf0d6;
+  --text:#0a1f15; --text2:#1a3d28; --text3:#4a7a61; --dark:#071a10;
+  --teal:#6ee7b7; --r:10px; --rL:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body {
+  min-height:100vh;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);
+  background-color:var(--bg);
+  background-image:
+    radial-gradient(circle at 15% 20%,rgba(22,163,99,.10) 0%,transparent 45%),
+    radial-gradient(circle at 85% 75%,rgba(13,122,78,.08) 0%,transparent 45%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='none' stroke='rgba(13,122,78,0.06)' stroke-width='1'%3E%3Crect x='22' y='8' width='16' height='44' rx='4'/%3E%3Crect x='8' y='22' width='44' height='16' rx='4'/%3E%3C/g%3E%3C/svg%3E");
+  background-size:auto,auto,60px 60px;
+  display:flex;align-items:center;justify-content:center;padding:2rem;
+}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pop{0%{transform:scale(0)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+.card {
+  background:var(--card);border:1px solid var(--border);border-radius:var(--rL);
+  padding:2.5rem 2.25rem;width:100%;max-width:420px;text-align:center;
+  animation:rise .45s cubic-bezier(.16,1,.3,1) both;
+}
+.icon-wrap {
+  width:72px;height:72px;border-radius:50%;
+  background:var(--accent-l);border:2px solid var(--accent2);
+  display:flex;align-items:center;justify-content:center;font-size:2rem;
+  margin:0 auto 1.4rem;animation:pop .5s .2s cubic-bezier(.16,1,.3,1) both;
+}
+h1{font-size:1.5rem;font-weight:700;color:var(--text);margin-bottom:.5rem;}
+.sub{font-size:.82rem;color:var(--text3);margin-bottom:1.8rem;}
+.msg-box{
+  background:var(--accent-l);border-left:4px solid var(--accent2);
+  border-radius:var(--r);padding:12px 16px;font-size:.85rem;
+  color:var(--accent);font-weight:700;margin-bottom:2rem;text-align:left;
+}
+.btn {
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  padding:12px 24px;border-radius:var(--r);border:none;cursor:pointer;
+  font-family:inherit;font-size:.82rem;font-weight:700;transition:all .18s;
+  text-decoration:none;background:var(--accent);color:#fff;width:100%;
+}
+.btn:hover{background:#0a5c3a;transform:translateY(-1px);}
+</style>
+</head>
+<body>
+{% if data %}
+<div class="card">
+  <div class="icon-wrap">💾</div>
+  <h1>Changes Saved!</h1>
+  <p class="sub">Medicine record has been updated successfully</p>
+  <div class="msg-box">{{ data }}</div>
+  <a href="show_medicine" class="btn">← Back to Medicine List</a>
+</div>
+{% endif %}
+</body>
+</html>

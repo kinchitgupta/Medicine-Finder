@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Competition – Medical Portal</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#edf7f2; --bg2:#d9f0e6; --surface:#c5e8d8; --card:#b0ddc8;
+  --border:#7ec4a0; --accent:#0d7a4e; --accent2:#16a363; --accent-l:#bbf0d6;
+  --text:#0a1f15; --text2:#1a3d28; --text3:#4a7a61; --dark:#071a10;
+  --teal:#6ee7b7; --red:#dc2626; --red-l:#fef2f2; --r:10px; --rL:16px;
+  --gold:#b45309; --gold-l:#fef3c7; --gold-border:#fcd34d;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body {
+  min-height:100vh;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);
+  background-color:var(--bg);
+  background-image:
+    radial-gradient(circle at 15% 20%,rgba(22,163,99,.10) 0%,transparent 45%),
+    radial-gradient(circle at 85% 75%,rgba(13,122,78,.08) 0%,transparent 45%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='none' stroke='rgba(13,122,78,0.06)' stroke-width='1'%3E%3Crect x='22' y='8' width='16' height='44' rx='4'/%3E%3Crect x='8' y='22' width='44' height='16' rx='4'/%3E%3C/g%3E%3C/svg%3E");
+  background-size:auto,auto,60px 60px;
+  display:flex;flex-direction:column;
+}
+
+/* NAVBAR */
+.navbar {
+  background:var(--dark);padding:0 2rem;height:58px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:2px solid var(--accent2);position:sticky;top:0;z-index:100;
+}
+.navbar-brand{font-size:1rem;font-weight:700;color:var(--teal);display:flex;align-items:center;gap:8px;}
+.brand-dot{width:8px;height:8px;border-radius:50%;background:var(--accent2);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(22,163,99,.5)}70%{box-shadow:0 0 0 7px rgba(22,163,99,0)}}
+.navbar-links{display:flex;align-items:center;gap:4px;}
+.navbar-links a {
+  text-decoration:none;font-size:.78rem;font-weight:600;color:#7abf99;
+  padding:6px 14px;border-radius:50px;text-transform:uppercase;letter-spacing:.03em;transition:background .2s,color .2s;
+}
+.navbar-links a:hover{background:rgba(255,255,255,.1);color:#fff;}
+.navbar-links a.active{background:rgba(22,163,99,.2);color:var(--teal);}
+.navbar-links a.logout{background:rgba(22,163,99,.15);color:var(--teal);border:1px solid rgba(22,163,99,.3);}
+
+.wrap{max-width:1060px;margin:0 auto;padding:2rem 1.5rem 4rem;width:100%;}
+
+.back-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  text-decoration:none;font-size:.8rem;font-weight:700;
+  color:var(--text3);margin-bottom:1.2rem;
+  padding:6px 12px;border-radius:var(--r);
+  background:var(--surface);border:1px solid var(--border);
+  transition:all .18s;
+}
+.back-btn:hover{color:var(--accent);background:var(--accent-l);}
+
+/* PAGE HEADER */
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.6rem;}
+.page-header h1{font-size:clamp(1.3rem,3vw,1.9rem);font-weight:700;color:var(--text);}
+.page-header h1 span{color:var(--accent);}
+.page-header .sub{font-size:.8rem;color:var(--text3);margin-top:3px;}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.2rem;}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* MED CARD */
+.med-card {
+  background:var(--card);border:1px solid var(--border);border-radius:var(--rL);
+  padding:1.4rem 1.5rem;transition:box-shadow .2s,transform .2s;
+  animation:rise .4s cubic-bezier(.16,1,.3,1) both;
+}
+.med-card:hover{box-shadow:0 6px 24px rgba(13,122,78,.15);transform:translateY(-2px);}
+
+.med-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1rem;}
+.med-name{font-size:1rem;font-weight:700;color:var(--text);}
+.med-id-badge{
+  background:var(--accent-l);color:var(--accent);
+  font-size:.65rem;font-weight:700;padding:3px 9px;
+  border-radius:50px;border:1px solid var(--border);white-space:nowrap;
+}
+
+/* rival badge — golden sword accent */
+.rival-badge{
+  background:var(--gold-l);color:var(--gold);
+  font-size:.65rem;font-weight:700;padding:3px 9px;
+  border-radius:50px;border:1px solid var(--gold-border);white-space:nowrap;
+}
+
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);font-size:.8rem;}
+.info-row:last-of-type{border-bottom:none;}
+.info-key{color:var(--text3);font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;}
+.info-val{color:var(--text2);font-weight:600;}
+.price-tag{font-size:1.1rem;font-weight:700;color:var(--accent);}
+
+
+/* EMPTY / MSG STATES */
+.empty{
+  text-align:center;padding:3rem;
+  background:var(--card);border:1px solid var(--border);border-radius:var(--rL);
+  font-size:.9rem;color:var(--text3);
+}
+.empty .big{font-size:2.5rem;margin-bottom:.6rem;}
+
+.msg-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--rL);
+  padding:1.6rem;font-size:.9rem;font-weight:600;color:var(--text2);
+  animation:rise .4s cubic-bezier(.16,1,.3,1) both;
+}
+
+/* stagger animation for each card */
+.med-card:nth-child(1){animation-delay:.05s}
+.med-card:nth-child(2){animation-delay:.10s}
+.med-card:nth-child(3){animation-delay:.15s}
+.med-card:nth-child(4){animation-delay:.20s}
+.med-card:nth-child(5){animation-delay:.25s}
+.med-card:nth-child(6){animation-delay:.30s}
+
+@media(max-width:600px){
+  .navbar-links{display:none;}
+  .grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-brand"><div class="brand-dot"></div>✚ Medical Portal</div>
+  <div class="navbar-links">
+    <a href="medical_home">Home</a>
+    <a href="medicine_reg">Medicine Reg</a>
+    <a href="show_medicine">Show Medicine</a>
+    <a href="edit_medical_profile">Edit Profile</a>
+    <a href="logout" class="logout">⎋ Logout</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <a href="show_medicine" class="back-btn">← Back to Inventory</a>
+
+  <div class="page-header">
+    <div>
+      <h1>⚔️ <span>Competition</span></h1>
+      <p class="sub">Rival medicines in the market</p>
+    </div>
+  </div>
+
+  {% if data %}
+  <form method="post" action="reival">
+    <div class="grid">
+      {% for d in data %}
+      <div class="med-card">
+
+        <div class="med-header">
+          <div class="med-name">💊 {{ d[1] }}</div>
+          <span class="rival-badge">⚔️ Rival</span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-key">Medicine ID</span>
+          <span class="med-id-badge">#{{ d[0] }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">Company</span>
+          <span class="info-val">{{ d[2] }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">Licence No.</span>
+          <span class="info-val">{{ d[3] }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">Type</span>
+          <span class="info-val">{{ d[4] }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key">Price</span>
+          <span class="price-tag">₹ {{ d[5] }}</span>
+        </div>
+
+      </div>
+      {% endfor %}
+    </div>
+  </form>
+
+  {% elif msg %}
+  <div class="msg-card">
+    ℹ️ {{ msg }}
+  </div>
+
+  {% else %}
+  <div class="empty">
+    <div class="big">⚔️</div>
+    <p>No rival medicines found.</p>
+  </div>
+  {% endif %}
+
+</div>
+
+</body>
+</html>

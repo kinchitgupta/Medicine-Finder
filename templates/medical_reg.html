@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Medical Store Registration</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2+family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #edf2f7;
+  --bg2:       #e2eaf4;
+  --surface:   #d6e2ef;
+  --card:      #c9d9ea;
+  --border:    #aec4d9;
+  --accent:    #1d4ed8;
+  --accent2:   #3b82f6;
+  --accent-l:  #bfdbfe;
+  --text:      #0f1e2e;
+  --text2:     #1e3a52;
+  --text3:     #5a7a96;
+  --navy:      #0f2137;
+  --sky:       #93c5fd;
+  --r:         10px;
+  --rL:        16px;
+  --red:       #ef4444;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* ── SIMPLIFIED SINGLE-ACTION NAVBAR ── */
+.navbar {
+  background: var(--navy);
+  padding: 0 2rem;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--accent2);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.navbar-brand {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--sky);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.brand-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--accent2);
+}
+.nav-home-btn {
+  text-decoration: none;
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--sky);
+  background: rgba(59, 130, 246, 0.15);
+  padding: 7px 14px;
+  border-radius: 6px;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  transition: all .2s;
+}
+.nav-home-btn:hover {
+  background: var(--accent2);
+  color: #fff;
+}
+
+/* ── COMPACT PAGE WRAP ── */
+.wrap {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1.5rem 1.5rem 2.5rem;
+  width: 100%;
+}
+
+/* ── PAGE HEADER ── */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.2rem;
+}
+.page-header h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -.01em;
+}
+.page-header h1 span { color: var(--accent); }
+.page-header .sub { font-size: .78rem; color: var(--text3); margin-top: 1px; }
+
+.badge-secure {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--accent-l);
+  border: 1px solid var(--border);
+  padding: 5px 12px; border-radius: 50px;
+  font-size: .68rem; font-weight: 700;
+  color: var(--accent);
+  letter-spacing: .02em;
+}
+
+/* ── FORM CARD ── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--rL);
+  padding: 1.5rem 1.8rem;
+}
+
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 1rem 0 0.75rem;
+}
+.section-divider:first-of-type { margin-top: 0; }
+.section-divider span {
+  font-size: .65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--text3);
+}
+.section-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.row {
+  display: grid;
+  gap: 1rem;
+}
+.col-2 { grid-template-columns: 1fr 1fr; }
+.col-1 { grid-template-columns: 1fr; }
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+.field label {
+  font-size: .68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--text2);
+  margin-bottom: 4px;
+}
+.field input {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 9px 12px;
+  font-family: inherit;
+  font-size: .84rem;
+  color: var(--text);
+  font-weight: 500;
+  outline: none;
+  transition: all .15s;
+}
+.field input:focus {
+  border-color: var(--accent);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.12);
+}
+.field input::placeholder { color: var(--text3); opacity: 0.65; }
+
+.err {
+  font-size: .68rem;
+  font-weight: 600;
+  color: var(--red);
+  min-height: 14px;
+  margin-top: 2px;
+}
+
+/* ── BUTTONS & FOOTER ── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  text-decoration: none; font-size: .78rem; font-weight: 700;
+  padding: 10px 20px; border-radius: var(--r);
+  border: none; cursor: pointer; font-family: inherit; transition: all .15s;
+}
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: #133db3; transform: translateY(-1px); }
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+.foot-note { font-size: .72rem; color: var(--text3); font-weight: 500; }
+
+.result-box {
+  margin-top: 0.75rem;
+  padding: 10px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  font-size: .8rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+@media(max-width:640px){
+  .col-2 { grid-template-columns: 1fr; gap: 0.5rem; }
+  .card { padding: 1.25rem; }
+  .page-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .form-actions { flex-direction: column; gap: 12px; align-items: center; text-align: center; }
+}
+</style>
+
+<script>
+function validateForm(){
+  let ok = true;
+  for(let i=1; i<=8; i++){
+    const e = document.getElementById('e' + i);
+    if(e) e.textContent = '';
+  }
+  const v = id => document.getElementById(id).value.trim();
+  const err = (id, msg) => {
+    const e = document.getElementById(id);
+    if(e) e.textContent = msg;
+    ok = false;
+  };
+
+  if(!/^[A-Za-z ]{2,50}$/.test(v('t1'))) err('e1','Valid shop name required (letters, 2–50 chars)');
+  if(!/^[A-Za-z ]{2,50}$/.test(v('t2'))) err('e2','Valid owner name required');
+  if(!/^[A-Za-z0-9\-\/]{4,20}$/.test(v('t3'))) err('e3','Valid licence number required (4–20 chars)');
+  if(v('t4').length < 5) err('e4','Full address required (min 5 chars)');
+  if(!/^\+?[0-9]{7,15}$/.test(v('t5').replace(/[\s\-]/g,''))) err('e5','Valid phone number required');
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v('t6'))) err('e6','Valid email required');
+
+  const p = document.getElementById('t7').value;
+  if(p.length < 6) err('e7','Password must be at least 6 characters');
+  if(p !== document.getElementById('t8').value) err('e8','Passwords do not match');
+
+  return ok;
+}
+</script>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-brand"><div class="brand-dot"></div>✦ Admin Portal</div>
+  <a href="admin_home" class="nav-home-btn">← Return to Home</a>
+</nav>
+
+<div class="wrap">
+  <div class="page-header">
+    <div>
+      <h1>Store <span>Registration</span></h1>
+      <p class="sub">Provision and authorization profile setup for retail pharmacies</p>
+    </div>
+    <div class="badge-secure">🏥 Licensed Stores Only</div>
+  </div>
+
+  <div class="card">
+    <form method="POST" action="medicalreg" onsubmit="return validateForm()">
+
+      <div class="section-divider"><span>Store Information</span></div>
+      <div class="row col-2">
+        <div class="field">
+          <label for="t1">Store Name</label>
+          <input type="text" id="t1" name="T1" placeholder="e.g. LifeCare Pharmacy">
+          <span class="err" id="e1"></span>
+        </div>
+        <div class="field">
+          <label for="t2">Owner Name</label>
+          <input type="text" id="t2" name="T2" placeholder="Owner full name">
+          <span class="err" id="e2"></span>
+        </div>
+      </div>
+      <div class="row col-1">
+        <div class="field">
+          <label for="t3">Licence Number</label>
+          <input type="text" id="t3" name="T3" placeholder="e.g. MH-PH-2026-00123">
+          <span class="err" id="e3"></span>
+        </div>
+      </div>
+
+      <div class="section-divider"><span>Contact Details</span></div>
+      <div class="row col-1">
+        <div class="field">
+          <label for="t4">Physical Address</label>
+          <input type="text" id="t4" name="T4" placeholder="Street, City, State, ZIP">
+          <span class="err" id="e4"></span>
+        </div>
+      </div>
+      <div class="row col-2" style="margin-top: 0.5rem;">
+        <div class="field">
+          <label for="t5">Contact Number</label>
+          <input type="text" id="t5" name="T5" placeholder="Primary phone number">
+          <span class="err" id="e5"></span>
+        </div>
+        <div class="field">
+          <label for="t6">Email Address</label>
+          <input type="email" id="t6" name="T6" placeholder="store@domain.com">
+          <span class="err" id="e6"></span>
+        </div>
+      </div>
+
+      <div class="section-divider"><span>Security Authorization</span></div>
+      <div class="row col-2">
+        <div class="field">
+          <label for="t7">Password</label>
+          <input type="password" id="t7" name="T7" placeholder="Create robust credentials">
+          <span class="err" id="e7"></span>
+        </div>
+        <div class="field">
+          <label for="t8">Confirm Password</label>
+          <input type="password" id="t8" name="T8" placeholder="Repeat account password">
+          <span class="err" id="e8"></span>
+        </div>
+      </div>
+
+      {% if result %}
+      <div class="result-box">💡 {{ result }}</div>
+      {% endif %}
+
+      <div class="form-actions">
+        <span class="foot-note">🔒 Encrypted identity asset deployment layer</span>
+        <button type="submit" class="btn btn-primary">Register Store →</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+</body>
+</html>
