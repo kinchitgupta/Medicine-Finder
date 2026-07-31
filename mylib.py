@@ -1,15 +1,18 @@
+import os
 import pymysql
+
 def get_db_cursor():
-    cn=pymysql.connect(
-        host='localhost',
-        user='root',
-        password='',
-        port=3306,
-        database='medical_store',
-        autocommit=True,
+    conn = pymysql.connect(
+        host=os.environ.get('DB_HOST'),
+        port=int(os.environ.get('DB_PORT', 3306)),
+        user=os.environ.get('DB_USER'),
+        password=os.environ.get('DB_PASS'),
+        database=os.environ.get('DB_NAME'),
+        ssl={'ca': 'cal.pem'},
+        cursorclass=pymysql.cursors.Cursor,
+        autocommit=True
     )
-    cur=cn.cursor()
-    return cur
+    return conn.cursor()
 def getAdmin(email):
     cur = get_db_cursor()
     sql="select * from admindata where email='%s'" % email

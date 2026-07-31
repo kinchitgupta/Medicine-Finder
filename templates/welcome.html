@@ -4,29 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medicine Finder - Search Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', sans-serif;
         }
 
-        /* Strict single-screen layout context with clean overflow rules */
         html, body {
             height: 100%;
             overflow: hidden;
         }
 
-        /* Brighter, ultra-clean spring medical color combo background */
+        /* Pure white background with floating medical items */
         body {
-            background: linear-gradient(135deg, #f4fbf9 0%, #eef9ff 100%);
+            background: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             min-height: 100dvh;
             padding: 20px;
+            position: relative;
+        }
+
+        /* Background Medical Decorative Elements */
+        .med-decor {
+            position: absolute;
+            font-size: 2.2rem;
+            opacity: 0.15;
+            user-select: none;
+            pointer-events: none;
+            z-index: 1;
+            animation: floatSlow 8s ease-in-out infinite alternate;
+        }
+
+        .item1 { top: 8%; left: 6%; animation-delay: 0s; font-size: 3rem; }
+        .item2 { top: 15%; right: 8%; animation-delay: 1.5s; font-size: 2.8rem; }
+        .item3 { bottom: 12%; left: 8%; animation-delay: 3s; font-size: 3.2rem; }
+        .item4 { bottom: 10%; right: 6%; animation-delay: 2s; font-size: 2.6rem; }
+        .item5 { top: 50%; left: 3%; animation-delay: 4s; font-size: 2.4rem; }
+        .item6 { top: 48%; right: 4%; animation-delay: 2.5s; font-size: 2.5rem; }
+
+        @keyframes floatSlow {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-15px) rotate(10deg); }
         }
 
         /* Shared layout engine matching login card architecture */
@@ -34,17 +58,26 @@
             display: flex;
             background-color: #ffffff;
             border-radius: 20px;
-            box-shadow: 0 12px 35px rgba(13, 148, 136, 0.06);
+            box-shadow: 0 20px 40px rgba(219, 39, 119, 0.12), 0 1px 3px rgba(0, 0, 0, 0.05);
+            border: 1px solid #fbcfe8;
             width: 100%;
             max-width: 1050px;
-            height: 620px; /* Fixed functional structural ceiling */
+            height: 620px;
             overflow: hidden;
+            position: relative;
+            z-index: 2;
+            animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* Left Control Panel Base Panel */
+        @keyframes slideUpFade {
+            0% { opacity: 0; transform: translateY(30px) scale(0.98); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Left Control Panel Base Panel - Soft Rose/Pink Palette */
         .search-sidebar {
             flex: 1;
-            background: linear-gradient(145deg, #14b8a6 0%, #0d9488 100%);
+            background: linear-gradient(135deg, #be185d 0%, #831843 100%);
             position: relative;
             color: #ffffff;
             padding: 3rem 2.5rem;
@@ -54,16 +87,20 @@
             overflow: hidden;
         }
 
-        /* Decorative ambient geometry nodes */
         .sidebar-circle {
             position: absolute;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            animation: floatCircle 6s ease-in-out infinite alternate;
         }
-        .c1 { width: 90px; height: 90px; top: -15px; right: -15px; }
-        .c2 { width: 60px; height: 60px; bottom: 8%; left: -10px; }
+        .c1 { width: 150px; height: 150px; top: -30px; right: -30px; }
+        .c2 { width: 100px; height: 100px; bottom: 10%; left: -20px; animation-delay: 2s; }
 
-        /* Top Bar Navigation Element Wrapper */
+        @keyframes floatCircle {
+            0% { transform: translateY(0px) scale(1); }
+            100% { transform: translateY(-10px) scale(1.05); }
+        }
+
         .nav-header {
             display: flex;
             justify-content: space-between;
@@ -73,27 +110,31 @@
         }
 
         .brand-title {
-            font-size: 1.1rem;
+            font-size: 0.9rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.12);
+            padding: 6px 14px;
+            border-radius: 6px;
+            color: #fbcfe8;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .brand-title::before {
             content: '✚';
-            font-size: 1rem;
-            color: #ccfbf1;
+            font-size: 0.85rem;
+            color: #fbcfe8;
         }
 
-        /* High-utility clean link matching layout properties */
         .login-btn {
             font-size: 0.85rem;
             text-decoration: none;
             color: #ffffff;
-            background: rgba(15, 118, 110, 0.4);
+            background: rgba(255, 255, 255, 0.15);
             padding: 6px 16px;
             border-radius: 50px;
             font-weight: 600;
@@ -103,11 +144,9 @@
 
         .login-btn:hover {
             background: #ffffff;
-            color: #0d9488;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            color: #be185d;
         }
 
-        /* Centered Context Input Block */
         .search-center {
             z-index: 2;
             margin: auto 0;
@@ -116,18 +155,18 @@
 
         .search-center h1 {
             font-size: 2.2rem;
-            font-weight: 800;
+            font-weight: 700;
             margin-bottom: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: -0.5px;
+            color: #ffffff;
         }
 
         .search-center p.tagline {
-            font-size: 0.95rem;
-            line-height: 1.5;
-            color: #f0fdfa;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #fce7f3;
+            margin-bottom: 1.5rem;
             opacity: 0.9;
-            margin-bottom: 2rem;
         }
 
         .form-group {
@@ -144,66 +183,64 @@
         .input-icon {
             position: absolute;
             left: 14px;
-            font-size: 1.1rem;
-            color: #0d9488;
+            font-size: 1rem;
+            color: #db2777;
             pointer-events: none;
         }
 
         input[type="text"] {
             width: 100%;
-            padding: 0.95rem 1rem 0.95rem 2.8rem;
-            background-color: #ffffff;
-            border: 2px solid transparent;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 600;
+            padding: 0.85rem 1rem 0.85rem 2.8rem;
+            background-color: #fff1f2;
+            border: 1.5px solid #fbcfe8;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
             outline: none;
             transition: all 0.2s ease-in-out;
-            color: #334155;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            color: #831843;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
         }
 
         input[type="text"]:focus {
-            box-shadow: 0 0 0 4px rgba(254, 254, 254, 0.25);
+            border-color: #db2777;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(219, 39, 119, 0.15);
         }
 
         button {
             width: 100%;
-            padding: 0.95rem;
-            background: #111827; /* Dark slate anchor color for high contrast action */
+            padding: 0.85rem;
+            background: #db2777;
             color: #ffffff;
             border: none;
-            border-radius: 12px;
-            font-size: 1.05rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease-in-out;
+            transition: background 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 4px 12px rgba(219, 39, 119, 0.25);
             margin-top: 0.5rem;
-            box-shadow: 0 4px 12px rgba(17, 24, 39, 0.15);
         }
 
         button:hover {
-            background: #1f2937;
-            box-shadow: 0 6px 16px rgba(17, 24, 39, 0.25);
+            background: #be185d;
         }
 
         button:active {
             transform: scale(0.99);
         }
 
-        /* Right Content Space: Scrollable dynamic layout tracking system cards */
+        /* Right Content Space */
         .results-container {
             flex: 1.3;
             padding: 2.5rem;
-            background-color: #fafdfc;
+            background-color: #ffffff;
             display: flex;
             flex-direction: column;
-            overflow-y: auto; /* Keeps scroll bars strictly self-contained within results */
+            overflow-y: auto;
         }
 
-        /* Custom scrollbar handling metrics */
         .results-container::-webkit-scrollbar {
             width: 6px;
         }
@@ -211,27 +248,26 @@
             background: transparent;
         }
         .results-container::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
+            background: #fbcfe8;
             border-radius: 10px;
         }
 
         .results-header {
             margin-bottom: 1.5rem;
             padding-bottom: 0.75rem;
-            border-bottom: 2px solid #f0fdfa;
+            border-bottom: 2px solid #fff1f2;
         }
 
         .results-header h2 {
-            color: #1f2937;
+            color: #831843;
             font-size: 1.4rem;
             font-weight: 700;
         }
 
-        /* Micro UI layout container objects */
         .medicine-card {
             background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 14px;
+            border: 1px solid #fbcfe8;
+            border-radius: 12px;
             padding: 1.25rem;
             margin-bottom: 1rem;
             transition: all 0.2s ease-in-out;
@@ -241,13 +277,13 @@
         }
 
         .medicine-card:hover {
-            border-color: #2dd4bf;
-            box-shadow: 0 6px 16px rgba(13, 148, 136, 0.04);
+            border-color: #db2777;
+            box-shadow: 0 6px 16px rgba(219, 39, 119, 0.08);
             transform: translateY(-1px);
         }
 
         .med-main-info h3 {
-            color: #0f766e;
+            color: #be185d;
             font-size: 1.15rem;
             font-weight: 700;
             margin-bottom: 0.25rem;
@@ -257,8 +293,8 @@
             display: inline-block;
             font-size: 0.75rem;
             font-weight: 700;
-            background: #ccfbf1;
-            color: #0d9488;
+            background: #fff1f2;
+            color: #db2777;
             padding: 3px 10px;
             border-radius: 50px;
             text-transform: uppercase;
@@ -268,30 +304,31 @@
             text-align: right;
             font-size: 1.25rem;
             font-weight: 800;
-            color: #111827;
+            color: #831843;
         }
 
         .store-details {
             grid-column: span 2;
             margin-top: 0.5rem;
             padding-top: 0.75rem;
-            border-top: 1px dashed #f1f5f9;
+            border-top: 1px dashed #ffe4e6;
             display: flex;
             justify-content: space-between;
             font-size: 0.85rem;
-            color: #64748b;
+            color: #9d174d;
         }
 
         .store-name-block strong {
-            color: #334155;
+            color: #831843;
         }
 
         .empty-state {
             margin: auto;
             text-align: center;
-            color: #94a3b8;
+            color: #9d174d;
             font-size: 0.95rem;
             font-weight: 500;
+            opacity: 0.7;
         }
 
         .empty-state-icon {
@@ -302,9 +339,9 @@
 
         .info-msg {
             padding: 1rem;
-            background-color: #e0f2fe;
-            border-left: 4px solid #0284c7;
-            color: #0369a1;
+            background-color: #fff1f2;
+            border-left: 4px solid #db2777;
+            color: #9f1239;
             font-weight: 600;
             font-size: 0.9rem;
             border-radius: 6px;
@@ -315,13 +352,12 @@
             margin-top: auto;
             text-align: center;
             font-size: 0.8rem;
-            color: #94a3b8;
-            font-weight: 600;
+            color: #fbcfe8;
+            font-weight: 500;
             z-index: 2;
             padding-top: 1rem;
         }
 
-        /* Viewport configuration management layer */
         @media (max-width: 768px) {
             .search-wrapper {
                 flex-direction: column;
@@ -342,10 +378,21 @@
                 padding: 1.5rem;
                 height: 320px;
             }
+            .med-decor {
+                display: none;
+            }
         }
     </style>
 </head>
 <body>
+
+<!-- Background Medical Decor Icons -->
+<div class="med-decor item1">💊</div>
+<div class="med-decor item2">🏥</div>
+<div class="med-decor item3">🩺</div>
+<div class="med-decor item4">🧪</div>
+<div class="med-decor item5">💉</div>
+<div class="med-decor item6">🩺</div>
 
 <div class="search-wrapper">
     <!-- Left Interaction & Search Controller System Panel -->
@@ -410,7 +457,7 @@
                 {{ msg }}
             </div>
         {% else %}
-            <!-- Initial landing layout prompt standard view  configuration state -->
+
             <div class="empty-state">
                 <span class="empty-state-icon">📋</span>
                 Ready for query lookup. Enter a parameter value to display active branch listings.

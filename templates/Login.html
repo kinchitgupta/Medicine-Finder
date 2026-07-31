@@ -4,47 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medical & Admin Login Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', sans-serif;
         }
 
-        /* Strict single-screen layout with zero scrolling */
         html, body {
             height: 100%;
             overflow: hidden;
         }
 
-        /* Inviting, clean medical palette */
+        /* Pure white background with floating medical items */
         body {
-            background: linear-gradient(135deg, #f0faf7 0%, #eef9ff 100%);
+            background: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             min-height: 100dvh;
             padding: 20px;
+            position: relative;
         }
 
-        /* Two-column professional card frame with smooth corners */
+        /* Background Medical Decorative Elements */
+        .med-decor {
+            position: absolute;
+            font-size: 2.2rem;
+            opacity: 0.15;
+            user-select: none;
+            pointer-events: none;
+            z-index: 1;
+            animation: floatSlow 8s ease-in-out infinite alternate;
+        }
+
+        .item1 { top: 8%; left: 6%; animation-delay: 0s; font-size: 3rem; }
+        .item2 { top: 15%; right: 8%; animation-delay: 1.5s; font-size: 2.8rem; }
+        .item3 { bottom: 12%; left: 8%; animation-delay: 3s; font-size: 3.2rem; }
+        .item4 { bottom: 10%; right: 6%; animation-delay: 2s; font-size: 2.6rem; }
+        .item5 { top: 50%; left: 3%; animation-delay: 4s; font-size: 2.4rem; }
+        .item6 { top: 48%; right: 4%; animation-delay: 2.5s; font-size: 2.5rem; }
+
+        @keyframes floatSlow {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-15px) rotate(10deg); }
+        }
+
+        /* Main container wrapper */
         .login-wrapper {
             display: flex;
-            background-color: #ffffff;
+            background: #ffffff;
             border-radius: 20px;
-            box-shadow: 0 12px 30px rgba(15, 118, 110, 0.08);
+            box-shadow: 0 20px 40px rgba(219, 39, 119, 0.12), 0 1px 3px rgba(0, 0, 0, 0.05);
+            border: 1px solid #fbcfe8;
             width: 100%;
-            max-width: 950px;
-            height: 580px;
+            max-width: 980px;
+            height: 600px;
             overflow: hidden;
+            position: relative;
+            z-index: 2;
+            animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* Left Sidebar: Trustworthy, bright clinical tone */
+        @keyframes slideUpFade {
+            0% { opacity: 0; transform: translateY(30px) scale(0.98); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Left Sidebar: Soft Pink Medical Palette */
         .sidebar {
             flex: 1;
-            background: linear-gradient(145deg, #14b8a6 0%, #0d9488 100%);
+            background: linear-gradient(135deg, #be185d 0%, #831843 100%);
             position: relative;
             color: #ffffff;
             padding: 3rem 2.5rem;
@@ -54,97 +87,173 @@
             overflow: hidden;
         }
 
-        /* Geometric ambient layout decoration */
         .sidebar-circle {
             position: absolute;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            animation: floatCircle 6s ease-in-out infinite alternate;
         }
-        .c1 { width: 90px; height: 90px; top: -10px; right: -10px; }
-        .c2 { width: 60px; height: 60px; bottom: 15%; left: -10px; }
+        .c1 { width: 150px; height: 150px; top: -30px; right: -30px; }
+        .c2 { width: 100px; height: 100px; bottom: 10%; left: -20px; animation-delay: 2s; }
+
+        @keyframes floatCircle {
+            0% { transform: translateY(0px) scale(1); }
+            100% { transform: translateY(-10px) scale(1.05); }
+        }
+
+        .nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 2;
+            width: 100%;
+        }
 
         .company-name {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 2px;
             font-weight: 700;
             display: flex;
             align-items: center;
             gap: 8px;
-            z-index: 2;
-            background: rgba(15, 118, 110, 0.4);
-            padding: 6px 16px;
-            border-radius: 50px;
-            width: fit-content;
+            background: rgba(255, 255, 255, 0.12);
+            padding: 6px 14px;
+            border-radius: 6px;
+            color: #fbcfe8;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .company-name::before {
             content: '✚';
-            font-size: 0.9rem;
-            color: #ccfbf1;
+            font-size: 0.85rem;
+            color: #fbcfe8;
         }
 
-        /* Centered message matrix */
+        .home-btn {
+            font-size: 0.85rem;
+            text-decoration: none;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.2s ease-in-out;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .home-btn:hover {
+            background: #ffffff;
+            color: #be185d;
+        }
+
         .welcome-center {
-            text-align: center;
+            text-align: left;
             margin: auto 0;
             z-index: 2;
         }
 
         .welcome-center p.subtitle {
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             margin-bottom: 0.4rem;
-            font-weight: 600;
-            color: #ccfbf1;
+            font-weight: 500;
+            color: #fbcfe8;
         }
 
         .welcome-center h2 {
-            font-size: 2.6rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            position: relative;
-            display: inline-block;
-            margin-bottom: 1.5rem;
+            font-size: 2.4rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 1.2rem;
+            color: #ffffff;
         }
 
-        /* Clean descriptive messaging pane */
         .welcome-center p.description {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             line-height: 1.6;
-            margin-top: 0.5rem;
-            text-align: center;
             padding: 14px;
-            font-weight: 500;
-            background: rgba(255, 255, 255, 0.12);
-            border-radius: 12px;
-            color: #f0fdfa;
+            font-weight: 400;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            color: #fce7f3;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Right Column Form Space - Soft Mint Base */
+        .demo-credentials {
+            margin-top: 1rem;
+            background: rgba(251, 207, 232, 0.12);
+            border: 1px solid rgba(251, 207, 232, 0.25);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 0.82rem;
+            z-index: 2;
+            color: #fce7f3;
+        }
+
+        .demo-credentials h4 {
+            color: #fbcfe8;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .demo-credentials h4 span {
+            font-size: 0.7rem;
+            background: rgba(251, 207, 232, 0.25);
+            padding: 2px 6px;
+            border-radius: 4px;
+            cursor: pointer;
+            color: #ffffff;
+            transition: background 0.2s;
+        }
+
+        .demo-credentials h4 span:hover {
+            background: rgba(251, 207, 232, 0.4);
+        }
+
+        .demo-credentials p {
+            margin-bottom: 4px;
+            font-family: monospace;
+            color: #fce7f3;
+        }
+
+        .demo-credentials p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Right Form Container */
         .form-container {
             flex: 1.1;
-            padding: 3.5rem 3.5rem;
+            padding: 3rem 3.5rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            position: relative;
-            background-color: #fafdfc;
+            background-color: #ffffff;
         }
 
         .form-header {
-            margin-bottom: 2.5rem;
-            text-align: center;
+            margin-bottom: 2rem;
         }
 
         .form-header h1 {
-            color: #111827;
-            font-size: 2.1rem;
+            color: #831843;
+            font-size: 1.8rem;
             font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .form-header p {
+            color: #9d174d;
+            font-size: 0.88rem;
+            margin-top: 4px;
+            opacity: 0.8;
         }
 
         .form-group {
-            margin-bottom: 1.1rem;
+            margin-bottom: 1rem;
             position: relative;
         }
 
@@ -154,69 +263,63 @@
             align-items: center;
         }
 
-        /* Clean user-friendly inline context iconography */
         .input-icon {
             position: absolute;
             left: 14px;
-            font-size: 1.1rem;
-            color: #0d9488;
+            font-size: 1rem;
+            color: #db2777;
             pointer-events: none;
-            opacity: 0.8;
+            opacity: 0.7;
         }
 
         input[type="text"],
         input[type="password"] {
             width: 100%;
-            padding: 0.95rem 1rem 0.95rem 2.8rem;
-            background-color: #ffffff;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 600;
+            padding: 0.85rem 1rem 0.85rem 2.8rem;
+            background-color: #fff1f2;
+            border: 1.5px solid #fbcfe8;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
             outline: none;
-            transition: all 0.2s ease-in-out;
-            color: #334155;
+            transition: all 0.2s ease;
+            color: #831843;
         }
 
-        /* Smooth geometric response feedback styling */
         input[type="text"]:focus,
         input[type="password"]:focus {
-            border-color: #0d9488;
-            box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.08);
+            border-color: #db2777;
             background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(219, 39, 119, 0.15);
         }
 
         .error-message {
             display: block;
-            color: #ef4444;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-top: 0.3rem;
-            margin-left: 4px;
-            min-height: 1.2rem;
+            color: #e11d48;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-top: 0.25rem;
+            margin-left: 2px;
+            min-height: 1.1rem;
         }
 
-        /* Modern interactive system actionable interface trigger */
         button {
             width: 100%;
-            padding: 0.95rem;
-            background: #0d9488;
+            padding: 0.85rem;
+            background: #db2777;
             color: #ffffff;
             border: none;
-            border-radius: 12px;
-            font-size: 1.05rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease-in-out;
-            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.15);
+            transition: background 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 4px 12px rgba(219, 39, 119, 0.25);
             margin-top: 0.5rem;
         }
 
         button:hover {
-            background: #115e59;
-            box-shadow: 0 6px 16px rgba(13, 148, 136, 0.25);
+            background: #be185d;
         }
 
         button:active {
@@ -226,39 +329,50 @@
         .server-message {
             margin-top: 1rem;
             padding: 0.75rem;
-            background-color: #fee2e2;
-            border-left: 4px solid #ef4444;
-            color: #991b1b;
-            font-weight: 600;
-            font-size: 0.88rem;
+            background-color: #fff1f2;
+            border-left: 3px solid #e11d48;
+            color: #9f1239;
+            font-weight: 500;
+            font-size: 0.85rem;
             border-radius: 6px;
             text-align: center;
+            animation: shake 0.4s ease-in-out;
         }
 
-        /* Clean attribution note */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-4px); }
+            40%, 80% { transform: translateX(4px); }
+        }
+
         .credit-footer {
-            margin-top: 2rem;
+            margin-top: 1.5rem;
             text-align: center;
-            font-size: 0.85rem;
-            color: #64748b;
-            font-weight: 600;
+            font-size: 0.8rem;
+            color: #9d174d;
+            font-weight: 500;
+            border-top: 1px solid #ffe4e6;
+            padding-top: 1rem;
+            display: flex;
+            justify-content: space-around;
         }
 
-        /* Screen adaptation dimensions matrix layout properties */
-        @media (max-width: 768px) {
+        @media (max-width: 800px) {
             .login-wrapper {
                 flex-direction: column;
                 max-width: 400px;
                 height: auto;
                 max-height: 95vh;
+                overflow-y: auto;
+            }
+            html, body {
+                overflow: auto;
             }
             .sidebar {
                 padding: 1.5rem;
-                min-height: 160px;
             }
             .welcome-center h2 {
                 font-size: 1.8rem;
-                margin-bottom: 0.5rem;
             }
             .welcome-center p.description {
                 display: none;
@@ -266,40 +380,58 @@
             .form-container {
                 padding: 2rem;
             }
-            .form-header {
-                margin-bottom: 1.5rem;
+            .med-decor {
+                display: none;
             }
         }
     </style>
 </head>
 <body>
 
+<!-- Background Medical Decor Icons -->
+<div class="med-decor item1">💊</div>
+<div class="med-decor item2">🏥</div>
+<div class="med-decor item3">🩺</div>
+<div class="med-decor item4">🧪</div>
+<div class="med-decor item5">💉</div>
+<div class="med-decor item6">🩺</div>
+
 <div class="login-wrapper">
-    <!-- Left Sidebar: Modern Friendly Clinical Panel -->
+    <!-- Left Sidebar -->
     <div class="sidebar">
         <div class="sidebar-circle c1"></div>
         <div class="sidebar-circle c2"></div>
 
-        <div class="company-name">Medicine Finder</div>
+        <div class="nav-header">
+            <span class="company-name">Medicine Finder</span>
+            <a href="/" class="home-btn">Home</a>
+        </div>
 
         <div class="welcome-center">
             <p class="subtitle">Welcome back</p>
             <h2>Portal Sign In</h2>
-            <p class="description">Only authorized Admin and Medical personnel logins are allowed here. Use this portal to manage user authentication records, securely view workspace credentials, and access detailed role-specific operations.</p>
+            <p class="description">Authorized access only for Administrative and Medical personnel to manage system records and secure workspace credentials.</p>
+
+            <!-- Quick Demo Credentials Box -->
+            <div class="demo-credentials">
+                <h4>Demo Logins <span onclick="fillDemo('admin')">Fill Admin</span> <span onclick="fillDemo('medical')">Fill Medical</span></h4>
+                <p><b>Admin:</b> admin@gmail.com / admin123</p>
+                <p><b>Medical:</b> kin@gmail.com / kin123</p>
+            </div>
         </div>
 
         <div></div>
     </div>
 
-    <!-- Right Interaction Space Area -->
+    <!-- Right Form Container -->
     <div class="form-container">
         <div class="form-header">
             <h1>Sign In</h1>
+            <p>Enter your credentials to continue</p>
         </div>
 
         <form method="post" action="login" onsubmit="return validateForm()">
 
-            <!-- Email Component Section -->
             <div class="form-group">
                 <div class="input-wrapper">
                     <span class="input-icon">✉</span>
@@ -308,7 +440,6 @@
                 <span id="s1" class="error-message"></span>
             </div>
 
-            <!-- Password Component Section -->
             <div class="form-group">
                 <div class="input-wrapper">
                     <span class="input-icon">🔒</span>
@@ -320,17 +451,15 @@
             <button type="submit">Log In</button>
         </form>
 
-        <!-- Template contextual messaging layer configuration -->
         {% if data %}
             <div class="server-message">
                 {{ data }}
             </div>
         {% endif %}
 
-        <!-- Branding Signoff -->
         <div class="credit-footer">
-            <p>Contact For Help :- 📞 7297060340</p>
-            <p> ✉️ kinchitgupta@gmail.com </p>
+            <span>📞 7297060340</span>
+            <span>✉️ kinchitgupta@gmail.com</span>
         </div>
     </div>
 </div>
@@ -338,7 +467,6 @@
 <script>
 function validateForm() {
     let isValid = true;
-
     const email = document.getElementById('txt1').value.trim();
     const password = document.getElementById('txt2').value.trim();
 
@@ -348,8 +476,7 @@ function validateForm() {
     if (email === "") {
         showError("s1", "Email address is required");
         isValid = false;
-    }
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
         showError("s1", "Please enter a valid email format");
         isValid = false;
     }
@@ -357,8 +484,7 @@ function validateForm() {
     if (password === "") {
         showError("s2", "Password configuration is required");
         isValid = false;
-    }
-    else if (password.length < 4) {
+    } else if (password.length < 4) {
         showError("s2", "Password must be at least 4 characters");
         isValid = false;
     }
@@ -368,6 +494,18 @@ function validateForm() {
 
 function showError(id, msg) {
     document.getElementById(id).textContent = msg;
+}
+
+function fillDemo(role) {
+    if (role === 'admin') {
+        document.getElementById('txt1').value = 'admin@gmail.com';
+        document.getElementById('txt2').value = 'admin123';
+    } else if (role === 'medical') {
+        document.getElementById('txt1').value = 'kin@gmail.com';
+        document.getElementById('txt2').value = 'kin123';
+    }
+    document.getElementById('s1').innerHTML = "";
+    document.getElementById('s2').innerHTML = "";
 }
 </script>
 
