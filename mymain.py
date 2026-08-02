@@ -349,7 +349,7 @@ def medicine_photo():
                 else:
                     return render_template('Show_medicine.html',msg1="Fail")
             else:
-                return render_template('show_medicine.html')
+                return render_template('Show_medicine.html')
         else:
             return redirect(url_for('auth_error'))
     else:
@@ -371,7 +371,7 @@ def medicine_change_photo():
                 os.remove("./static/photos/"+photo1)
                 return redirect(url_for('show_medicine'))
             else:
-                return render_template('show_medicine.html',msg2="Fail")
+                return render_template('Show_medicine.html',msg2="Fail")
         else:
             return redirect(url_for('auth_error'))
     else:
@@ -486,10 +486,10 @@ def login():
         if n>0:
             data=cur.fetchone()
             ut=data[2]
-            #create session
+
             session["email"]=e1
             session["usertype"]=ut
-            #send to page
+
             if ut=='admin':
                return  redirect(url_for("admin_home"))
             elif ut=='medical':
@@ -499,11 +499,10 @@ def login():
         else:
             return render_template('Login.html',msg="Login Failed")
     else:
-        return render_template('login.html')
+        return render_template('Login.html')
 
 @app.route('/logout')
 def logout():
-    #remove the session
     if "email" in session:
         session.pop('email',None)
         session.pop('usertype',None)
@@ -517,7 +516,7 @@ def auth_error():
 
 @app.route('/admin_home')
 def admin_home():
-    #check the session
+
     if "usertype" in session:
         ut=session["usertype"]
         e1=session['email']
