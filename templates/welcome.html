@@ -208,6 +208,21 @@
             box-shadow: 0 0 0 3px rgba(219, 39, 119, 0.15);
         }
 
+        /* Validation error state */
+        input[type="text"].input-error {
+            border-color: #e11d48;
+            background-color: #fff1f2;
+        }
+
+        .field-err {
+            display: block;
+            color: #e11d48;
+            font-size: 0.78rem;
+            font-weight: 600;
+            margin-top: 0.4rem;
+            min-height: 1.1rem;
+        }
+
         button {
             width: 100%;
             padding: 0.85rem;
@@ -409,12 +424,13 @@
             <h1>Find Medicine</h1>
             <p class="tagline">Enter your therapeutic or verification medicine specifications below to parse real-time marketplace stock configurations.</p>
 
-            <form method="post" action="/">
+            <form method="post" action="/" id="search-form" novalidate>
                 <div class="form-group">
                     <div class="input-wrapper">
                         <span class="input-icon">🔍</span>
-                        <input type="text" name="M1" value="{{ mname or '' }}" placeholder="Search Medicine Name..." required>
+                        <input type="text" id="med-search" name="M1" value="{{ mname or '' }}" placeholder="Search Medicine Name..." autocomplete="off">
                     </div>
+                    <span id="search-err" class="field-err"></span>
                 </div>
                 <button type="submit">Search Stock</button>
             </form>
@@ -465,6 +481,41 @@
         {% endif %}
     </div>
 </div>
+
+<script>
+    const searchForm  = document.getElementById('search-form');
+    const searchInput = document.getElementById('med-search');
+    const searchErr   = document.getElementById('search-err');
+
+    // Live filter: strip anything that isn't a letter or space as the user types
+    searchInput.addEventListener('input', function () {
+        const cleaned = this.value.replace(/[^A-Za-z\s]/g, '');
+        if (cleaned !== this.value) {
+            this.value = cleaned;
+        }
+        this.classList.remove('input-error');
+        searchErr.textContent = '';
+    });
+
+    searchForm.addEventListener('submit', function (e) {
+        const val = searchInput.value.trim();
+
+        if (val === '') {
+            e.preventDefault();
+            searchInput.classList.add('input-error');
+            searchErr.textContent = 'Please enter a medicine name';
+            searchInput.focus();
+            return;
+        }
+
+        if (!/^[A-Za-z\s]+$/.test(val)) {
+            e.preventDefault();
+            searchInput.classList.add('input-error');
+            searchErr.textContent = 'Only letters are allowed — no numbers or symbols';
+            searchInput.focus();
+        }
+    });
+</script>
 
 </body>
 </html>

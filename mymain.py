@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 app.config['UPLOAD_FOLDER']='./static/photos'
 
-app.secret_key="kinchit"
+app.secret_key="831c4b4a667776e4afe3a7c8112ac16508025ada18b3fb0d508b52df93b70066"
 
 @app.route('/',methods=['GET','POST'])
 def welcome():
