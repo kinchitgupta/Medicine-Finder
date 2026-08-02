@@ -1,6 +1,9 @@
 import os
 import pymysql
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+CA_PATH = os.path.join(BASE_DIR, 'cal.pem')
+
 def get_db_cursor():
     conn = pymysql.connect(
         host=os.environ.get('DB_HOST'),
@@ -8,7 +11,7 @@ def get_db_cursor():
         user=os.environ.get('DB_USER'),
         password=os.environ.get('DB_PASS'),
         database=os.environ.get('DB_NAME'),
-        ssl={'ca': 'cal.pem'},
+        ssl={'ca': CA_PATH},
         cursorclass=pymysql.cursors.Cursor,
         autocommit=True
     )
